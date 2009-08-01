@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -47,10 +46,11 @@ public class Boot {
 			return;
 		}
 		
+		LOG.info(inputText);
 		String[] words = inputText.split("\\s");
 		for (int i = 0; i < words.length; i++) {
 			WordClass wordClass = wordClassResolver.resolve(words[i]);
-			LOG.info(words[i] + " : " + wordClass);
+			LOG.info(words[i] + " : " + wordClass.getClass().getSimpleName());
 		}
     }
 }

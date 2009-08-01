@@ -21,4 +21,14 @@
  
    <bean id="wordClassResolver"	class="dart.blackcat.talker.ru.WordClassResolver">
    </bean>
+   
+   
+   
+   <!-- Word classes -->
+   <bean id="noun"		class="dart.blackcat.talker.ru.Noun"/>
+   <bean id="pronoun"	class="dart.blackcat.talker.ru.Pronoun"/>
+   <bean id="verb"		class="dart.blackcat.talker.ru.Verb"/>
+   <bean id="adjective"	class="dart.blackcat.talker.ru.Adjective"/>
+   <bean id="adverb"		class="dart.blackcat.talker.ru.Adverb"/>
+   <!-- /Word classes -->
 </beans>
