@@ -75,7 +75,7 @@ public class MorphologicalAnalisys implements Serializable {
 							if (wordClass == null) {
 								wordClass = Suffix.getInstance().resolveWordClass(suffix);
 							}
-							suffixAndEnd.substring(suffix.length());
+							suffixAndEnd = suffixAndEnd.substring(suffix.length());
 						}
 					}
 					suffixes = new String[wordSuffixList.size()];

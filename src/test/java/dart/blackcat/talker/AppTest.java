@@ -14,6 +14,6 @@ public class AppTest {
 
 	@Test
 	public void main() {
-		Boot.main(new String[] {"Я пошел гулять"});
+		Boot.main(new String[] {"Я пошел гулять предположение"});
 	}
 }
