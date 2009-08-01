@@ -2,8 +2,10 @@ package dart.blackcat.talker.ru;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 
 import org.apache.commons.logging.Log;
@@ -16,31 +18,73 @@ public class MorphologicalAnalisys implements Serializable {
 	
 	private String 		word;
 	private String[] 	prefixes;
-	private String[] 	roots;
+	private Set<String> 	roots = new HashSet<String>();
 	private String 		interfix;
 	private String[] 	suffixes;
 	private String		end;
 	private WordClass 	wordClass;
 	
-	SortedSet<String> 	rootSet = (new Root()).getSortedMorfemes(false);
-	SortedSet<String> 	prefixSet = (new Prefix()).getSortedMorfemes(false);
-	SortedSet<String> 	suffixSet = (Suffix.getInstance()).getSortedMorfemes(false);
-	SortedSet<String> 	interfixSet = (new Interfix()).getSortedMorfemes(false);
+	private SortedSet<String> 	rootSet = (new Root()).getSortedMorfemes(false);
+	private SortedSet<String> 	prefixSet = (new Prefix()).getSortedMorfemes(false);
+	private SortedSet<String> 	suffixSet = (Suffix.getInstance()).getSortedMorfemes(false);
+	private SortedSet<String> 	interfixSet = (new Interfix()).getSortedMorfemes(false);
 	
-	public MorphologicalAnalisys(String word) {
-		this.word = word;
-		
-		
+	private String[] findAllRoots(String word) {
+		String prefixesString = null;
+		String postfixesString = null;
 		
 		for (Iterator<String> i = rootSet.iterator(); i.hasNext();) {
 			String root = i.next();
 			
-			int position = word.indexOf(root);
-			if (position > -1) {
-				LOG.debug("Root: " + root);	//TODO second root (use interfixSet)
-				roots = new String[] {root};
+			if (word.contains(root)) {
+				prefixesString = word.substring(0, word.indexOf(root));
+				postfixesString = word.substring(word.indexOf(root) + root.length());
+				LOG.debug("Root: " + root);
+				roots.add(root);
 				
-				String prefixesString = word.substring(0, position);
+				
+				for (Iterator<String> j = interfixSet.iterator(); j.hasNext();) {
+					String interfix = j.next();
+					
+					if (prefixesString.endsWith(interfix)) {
+						String[] prefixesAndPostfixes = findAllRoots(prefixesString.substring(0, prefixesString.length() - interfix.length()));
+						if (prefixesAndPostfixes[0] != null) {
+							prefixesString = prefixesAndPostfixes[0];	
+						}
+					}
+					
+					if (postfixesString.startsWith(interfix)) {
+						String[] prefixesAndPostfixes = findAllRoots(postfixesString.substring(interfix.length()));
+						if (prefixesAndPostfixes[1] != null) {
+							postfixesString = prefixesAndPostfixes[1];	
+						}
+					}
+				}
+			}
+		}
+		
+		return new String[] {prefixesString, postfixesString};
+	}
+	
+	public MorphologicalAnalisys(String word) {
+		this.word = word;
+		
+		String[] prefixesAndPostfixes = findAllRoots(word);
+		
+		
+		
+		
+//		for (Iterator<String> i = rootSet.iterator(); i.hasNext();) {
+//			String root = i.next();
+			
+//			int position = word.indexOf(root);
+//			if (position > -1) {
+//				LOG.debug("Root: " + root);	//TODO second root (use interfixSet)
+////				roots = new String[] {root};
+//				roots.add(root);
+				
+//				String prefixesString = word.substring(0, position);
+				String prefixesString = prefixesAndPostfixes[0];
 				LOG.debug("Prefix(es): " + prefixesString);
 				if (prefixesString.isEmpty()) {
 					prefixes = new String[0];
@@ -57,7 +101,8 @@ public class MorphologicalAnalisys implements Serializable {
 					}
 				}
 				
-				String suffixAndEnd = word.substring(position + root.length());
+//				String suffixAndEnd = word.substring(position + root.length());
+				String suffixAndEnd = prefixesAndPostfixes[1];
 				LOG.debug("SuffixAndEnd: " + suffixAndEnd);
 				if (suffixAndEnd.isEmpty()) {
 					suffixes = new String[0];
@@ -88,20 +133,11 @@ public class MorphologicalAnalisys implements Serializable {
 				
 //				wordClass = new Noun(); //TODO plug
 //				return;
-			}
-		}
+//			}
+//		}
 		if (wordClass == null) {
 			throw new MorphemeParsingException("Root not found.");	
 		}
-	}
-	
-	/**
-	 * Find root in string
-	 * @param s {@link String}
-	 * @return {@link String} array with three elements: 0 - first word part; 1 - root; 2 - second word part.
-	 */
-	public String[] findRoot(String s) {
-		return prefixes;
 	}
 	
 	public String[] getPrefixes() {
@@ -110,10 +146,10 @@ public class MorphologicalAnalisys implements Serializable {
 	public void setPrefixes(String[] prefixes) {
 		this.prefixes = prefixes;
 	}
-	public String[] getRoots() {
+	public Set<String> getRoots() {
 		return roots;
 	}
-	public void setRoots(String[] roots) {
+	public void setRoots(Set<String> roots) {
 		this.roots = roots;
 	}
 	public String getInterfix() {
@@ -149,8 +185,9 @@ public class MorphologicalAnalisys implements Serializable {
 		for (int i = 0; i < prefixes.length; i++) {
 			sb.append("prefix: ").append(prefixes[i]).append("\n");
 		}
-		for (int i = 0; i < roots.length; i++) {
-			sb.append("root: ").append(roots[i]).append("\n");
+		for (Iterator<String> i = roots.iterator(); i.hasNext();) {
+			String root = i.next();
+			sb.append("root: ").append(root).append("\n");
 		}
 		for (int i = 0; i < suffixes.length; i++) {
 			sb.append("suffix: ").append(suffixes[i]).append("\n");

@@ -8,7 +8,7 @@ import dart.blackcat.talker.ru.util.StringLengthComparator;
 public class Root extends AbstractMorpheme {
 	
 	private static final String[] S = {
-		"ид", "ход", "хож", "гул", "шел", "шл", "вод", "ворот", "лож"
+		"ид", "ход", "хож", "гул", "шел", "шл", "вод", "ворот", "лож", "провод"
 	};
 
 //	@Override
