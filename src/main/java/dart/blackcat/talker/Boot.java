@@ -9,9 +9,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import dart.blackcat.talker.ru.WordClass;
-import dart.blackcat.talker.ru.WordClassResolver;
-
 
 /**
  * Hello world!
@@ -20,8 +17,6 @@ import dart.blackcat.talker.ru.WordClassResolver;
 public class Boot {
 
 	private static final Log LOG = LogFactory.getLog(Boot.class);
-	
-	protected final static String WORD_CLASS_RESOLVER_BEANNAME = "wordClassResolver";
 	
     public static void main( String[] args ) {
     	String inputText = args[0];
@@ -38,19 +33,12 @@ public class Boot {
 		}
 		
 		// start!
-		WordClassResolver wordClassResolver;
-		if (factory.containsBean(WORD_CLASS_RESOLVER_BEANNAME)) {
-			wordClassResolver = (WordClassResolver) factory.getBean(WORD_CLASS_RESOLVER_BEANNAME);
-		} else {
-			LOG.error("No word class resolver beans found!");
-			return;
-		}
+		// TODO
 		
 		LOG.info(inputText);
 		String[] words = inputText.split("\\s");
 		for (int i = 0; i < words.length; i++) {
-			WordClass wordClass = wordClassResolver.resolve(words[i]);
-			LOG.info(words[i] + " : " + wordClass.getClass().getSimpleName());
+			// TODO
 		}
     }
 }
