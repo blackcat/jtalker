@@ -6,7 +6,7 @@ public enum PathOfSpeech {
 	verb, infinitive,				// глагол, инфинитив (глагола)
 	participle, shortParticiple,	// причастие, краткое причастие
 	gerund,							// деепричастие
-	imperative,						// императив
+//	imperative,						// императив
 	pronoun, pronounPredicative, pronounAdjective, // местоимение, местоимение-предикатив, местоимение прилагательное
 	numeral, ordinal,				// числительное (количественное), порядковое числительное
 	adverb,							// наречие

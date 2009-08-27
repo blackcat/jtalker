@@ -12,6 +12,7 @@ public enum Grammema {
 	dative,						// дательный
 	instrumental,				// творительный
 	prepositional,				// предложный
+	vocative,					// звательный
 	secondCase,					// обозначает второй родительный или второй предложный падежи
 	perfectForm, imperfectForm,	// совершенный вид, несовершенный вид
 	transitiveVerb, nonTransitiveVerb, // переходный, непереходный глагол
