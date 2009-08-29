@@ -1,13 +1,13 @@
 package dart.blackcat.talker.aot.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import dart.blackcat.talker.aot.MorphologyAnalysis;
 import dart.blackcat.talker.domain.Grammema;
 import dart.blackcat.talker.domain.PathOfSpeech;
+import dart.blackcat.talker.util.StringUtils;
 
 public class AotDao extends JdbcDaoSupport {
 	
@@ -36,16 +37,23 @@ public class AotDao extends JdbcDaoSupport {
 		"	)								\n" +
 		"	left join ancode a on a.ancode = l.ancode		\n" +
 		"	left join ancode a0 on a0.ancode = fm.ancode	\n" +
-		"where	l.base_str = '?'			\n";
+		"where	l.base_str = ? and fm.flexia_str = ?		\n";
 	
 	protected AotResultSetExtractor rse = new AotResultSetExtractor();
 
-	public MorphologyAnalysis[] findWord(final String word) {
-		MorphologyAnalysis[] result = (MorphologyAnalysis[]) getJdbcTemplate().query(FIND_WORD, new PreparedStatementSetter() {
+	/**
+	 * find morphology information by lemma
+	 * @param lemma lemma (immutable word part). must be in UPPER CASE.
+	 * @return {@link HashSet}, can be empty
+	 */
+	@SuppressWarnings("unchecked")
+	public Set<MorphologyAnalysis> findWord(final String lemma, final String flexia) {
+		Set<MorphologyAnalysis> result = (Set<MorphologyAnalysis>) getJdbcTemplate().query(FIND_WORD, new PreparedStatementSetter() {
 
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, word);
+				ps.setString(1, lemma);
+				ps.setString(2, flexia);
 			}
 			
 		}, rse);
@@ -58,14 +66,12 @@ public class AotDao extends JdbcDaoSupport {
 
 		@Override
 		public Object extractData(ResultSet rs) throws SQLException, DataAccessException {
-			rs.last();
-			MorphologyAnalysis[] result = new MorphologyAnalysis[rs.getRow()];
-			rs.beforeFirst();
+			Set<MorphologyAnalysis> result = new HashSet<MorphologyAnalysis>();
 			
 			int k = 0;
 			while (rs.next()) {
-				String base = rs.getString(1);
-				String flexia = rs.getString(2);
+				String base = StringUtils.emptyIfNull(rs.getString(1));
+				String flexia = StringUtils.emptyIfNull(rs.getString(2));
 				byte accentCharNo = rs.getByte(3);
 				String pathOfSpeech = rs.getString(4);
 				String pathOfSpeech0 = rs.getString(5);
@@ -78,8 +84,8 @@ public class AotDao extends JdbcDaoSupport {
 					}
 				}
 				
-				StringTokenizer st = new StringTokenizer(grammemasString, ",");
-				StringTokenizer st0 = new StringTokenizer(grammemas0String, ",");
+				StringTokenizer st = new StringTokenizer(grammemasString == null ? "" : grammemasString, ",");
+				StringTokenizer st0 = new StringTokenizer(grammemas0String == null ? "" : grammemas0String, ",");
 				Grammema[] grammemas = new Grammema[st.countTokens() + st0.countTokens()];
 				int i = 0;
 
@@ -88,11 +94,11 @@ public class AotDao extends JdbcDaoSupport {
 					i++;
 				}
 				while (st0.hasMoreTokens()) {
-					grammemas[i] = string2Grammema(st.nextToken());
+					grammemas[i] = string2Grammema(st0.nextToken());
 					i++;
 				}
 				
-				result[k] = new MorphologyAnalysis(null, base, flexia, string2PathOfSpeech(pathOfSpeech0), grammemas);
+				result.add(new MorphologyAnalysis("", base, flexia, accentCharNo, string2PathOfSpeech(pathOfSpeech0), grammemas));
 				k++;
 			}
 			
@@ -114,7 +120,7 @@ public class AotDao extends JdbcDaoSupport {
 				return PathOfSpeech.interjection;
 			} else if (s.equals("ВВОДН")) {
 				return PathOfSpeech.introduction;
-			} else if (s.equals("C")) {
+			} else if (s.equals("С")) {
 				return PathOfSpeech.noun;
 			} else if (s.equals("ЧИСЛ")) {
 				return PathOfSpeech.numeral;
@@ -181,6 +187,10 @@ public class AotDao extends JdbcDaoSupport {
 				return Grammema.impersonal;
 			} else if (s.equals("но")) {
 				return Grammema.inanimate;
+			} else if (s.equals("разг")) {
+				return Grammema.informal;
+			} else if (s.equals("указат")) {
+				return Grammema.indicating;
 			} else if (s.equals("тв")) {
 				return Grammema.instrumental;
 			} else if (s.equals("вопр")) {
@@ -213,11 +223,11 @@ public class AotDao extends JdbcDaoSupport {
 				return Grammema.perfectForm;
 			} else if (s.equals("мн")) {
 				return Grammema.plural;
-			} else if (s.equals("проф")) {
+			} else if (s.equals("пр")) {
 				return Grammema.prepositional;
 			} else if (s.equals("нст")) {
 				return Grammema.present;
-			} else if (s.equals("нст")) {
+			} else if (s.equals("проф")) {
 				return Grammema.professionalism;
 			} else if (s.equals("кач")) {
 				return Grammema.quality;
@@ -231,6 +241,8 @@ public class AotDao extends JdbcDaoSupport {
 				return Grammema.singular;
 			} else if (s.equals("жарг")) {
 				return Grammema.slang;
+			} else if (s.equals("прев")) {
+				return Grammema.superlative;
 			} else if (s.equals("фам")) {
 				return Grammema.surname;
 			} else if (s.equals("3л")) {

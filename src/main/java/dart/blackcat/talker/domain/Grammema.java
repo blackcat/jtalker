@@ -31,5 +31,8 @@ public enum Grammema {
 	typo, 						// частая опечатка или ошибка
 	slang, archaism, professionalism, // жаргонизм, архаизм, профессионализм
 	acronym,					// аббревиатура
-	impersonal 					// безличный глагол
+	impersonal,					// безличный глагол
+	superlative,				// превосходная степень 
+	informal,					// разговорный
+	indicating,					// указательное (наречие)
 }

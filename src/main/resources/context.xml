@@ -24,6 +24,13 @@
  			<property name="dataSource"	ref="dataSource"/>
  		</bean>
  	<!-- /DAO -->
+ 	
+ 	
+ 	<!-- Morphology -->
+ 		<bean id="morphologyAnalyzer"		class="dart.blackcat.talker.aot.AotMorphologyAnalyzer">
+ 			<property name="aotDao"			ref="aotDao"/>
+ 		</bean>
+ 	<!-- /Morphology -->
  
    
    
@@ -34,8 +41,6 @@
    		<property name="username"				value="root"/>
    		<property name="password"				value="root"/>
    	</bean>
-   	
-   	<bean class="sess"></bean>
    <!-- /Data Source -->
    
    <!-- Transaction Management -->
