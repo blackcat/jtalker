@@ -24,6 +24,7 @@ public class Boot {
 		LOG.info("Starting Talker application.");
 		LOG.info("Creating Srping application context.");
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"context.xml"});
+		@SuppressWarnings("unused")
 		BeanFactory factory = context;
 		
 		// arguments parse

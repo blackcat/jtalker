@@ -14,8 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import dart.blackcat.talker.aot.AotMorphologyAnalyzer;
-import dart.blackcat.talker.aot.MorphologyAnalysis;
-import dart.blackcat.talker.aot.UnableToAnalyzeException;
+import dart.blackcat.talker.domain.MorphologyAnalysis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:context.xml"})
@@ -35,14 +34,9 @@ public class MorphologyAnalyzerTest {
 		
 		while (st.hasMoreTokens()) {
 			String word = st.nextToken();
-			try {
-				Set<MorphologyAnalysis> set = morphologyAnalyzer.analyze(word);
-				log.info(set);
-				result.put(word, set);
-			} catch (UnableToAnalyzeException e) {
-				log.error("unable to analyze", e);
-				result.put(word, null);
-			}
+			Set<MorphologyAnalysis> set = morphologyAnalyzer.analyze(word);
+			log.info(set);
+			result.put(word, set);
 		}
 		log.info(result);
 	}

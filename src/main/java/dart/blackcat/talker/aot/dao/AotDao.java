@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import dart.blackcat.talker.aot.MorphologyAnalysis;
 import dart.blackcat.talker.domain.Grammema;
+import dart.blackcat.talker.domain.MorphologyAnalysis;
 import dart.blackcat.talker.domain.PathOfSpeech;
 import dart.blackcat.talker.util.StringUtils;
 

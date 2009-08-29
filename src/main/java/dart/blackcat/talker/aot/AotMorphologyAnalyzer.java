@@ -1,18 +1,21 @@
 package dart.blackcat.talker.aot;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import dart.blackcat.talker.aot.dao.AotDao;
+import dart.blackcat.talker.domain.MorphologyAnalysis;
+import dart.blackcat.talker.domain.MorphologyAnalyzer;
 
 /**
  * {@link MorphologyAnalysis} factory
  * @author pvyazankin
  *
  */
-public class AotMorphologyAnalyzer {
+public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 	
 	private static final Log log = LogFactory.getLog(AotMorphologyAnalyzer.class);
 	
@@ -26,23 +29,22 @@ public class AotMorphologyAnalyzer {
 	 * {@link MorphologyAnalysis} factory method
 	 * @param word word to analyze
 	 * @return {@link Set} of {@link MorphologyAnalysis}es
-	 * @throws UnableToAnalyzeException when can't analyze
 	 */
-	public Set<MorphologyAnalysis> analyze(String word) throws UnableToAnalyzeException {
+	@Override
+	public Set<MorphologyAnalysis> analyze(String word)  {
 		word = word.toUpperCase();
 		log.debug(word + " - analyzing");
-		Set<MorphologyAnalysis> result = null;
+		Set<MorphologyAnalysis> result = new HashSet<MorphologyAnalysis>();
 		int length = word.length();
 
-		result = aotDao.findWord(word, "");
-		while (result.isEmpty() && length != 0) {
-			length--;
+		while (result.isEmpty() && length >= 0) {
 			result = aotDao.findWord(word.substring(0, length), word.substring(length));
+			length--;
 		}
 		
 		if (length == 0) {
 			log.debug(word + " unable to analyze.");
-			throw new UnableToAnalyzeException(word);
+			return null;
 		}
 		
 		log.debug(word + " " + result.size() + " results found.");

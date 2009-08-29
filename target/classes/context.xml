@@ -27,6 +27,14 @@
  	
  	
  	<!-- Morphology -->
+ 		<bean id="morphologyAnalyzerQueue"	class="dart.blackcat.talker.domain.MorphologyAnalyzerQueue">
+ 			<property name="analyzers">
+ 				<list>
+ 					<ref bean="morphologyAnalyzer"/>
+ 				</list>
+ 			</property>
+ 		</bean>
+ 		
  		<bean id="morphologyAnalyzer"		class="dart.blackcat.talker.aot.AotMorphologyAnalyzer">
  			<property name="aotDao"			ref="aotDao"/>
  		</bean>
