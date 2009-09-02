@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import dart.blackcat.talker.aot.AotException;
 import dart.blackcat.talker.aot.AotMorphologyAnalyzer;
 import dart.blackcat.talker.domain.MorphologyAnalysis;
 
@@ -26,7 +27,7 @@ public class MorphologyAnalyzerTest {
 	private static final Log log = LogFactory.getLog(MorphologyAnalyzerTest.class);
 	
 	@Test
-	public void testAnalyze() {
+	public void testAnalyze() throws AotException {
 		
 		String text = "Морфологический анализатор для русского языка — это что-то заумное? Программа, которая приводит слово к начальной форме, определяет падеж, находит словоформы — непонятно, как и подступиться? А на самом деле все не так и сложно. В статье — как я писал аналог mystem, lemmatizer и phpmorphy на Python, и что из этого получилось.";
 		StringTokenizer st = new StringTokenizer(text, " ,.-—:;\"\'\\/!?()[]{}@#№$%^&*_+=");

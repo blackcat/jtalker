@@ -4,13 +4,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import dart.blackcat.talker.JTalkerException;
+
 
 public class MorphologyAnalyzerQueue implements MorphologyAnalyzer {
 	
 	private Set<MorphologyAnalyzer> analyzers = new LinkedHashSet<MorphologyAnalyzer>();
 
 	@Override
-	public Set<MorphologyAnalysis> analyze(String word) {
+	public Set<MorphologyAnalysis> analyze(String word) throws JTalkerException {
 		Set<MorphologyAnalysis> result = null;
 		for (MorphologyAnalyzer analyzer : analyzers) {
 			result = analyzer.analyze(word);

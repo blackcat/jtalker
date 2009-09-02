@@ -28,10 +28,11 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 	/**
 	 * {@link MorphologyAnalysis} factory method
 	 * @param word word to analyze
-	 * @return {@link Set} of {@link MorphologyAnalysis}es
+	 * @return {@link Set} of {@link MorphologyAnalysis}es. Can be empty.
+	 * @throws AotException if there is any problem
 	 */
 	@Override
-	public Set<MorphologyAnalysis> analyze(String word)  {
+	public Set<MorphologyAnalysis> analyze(String word) throws AotException  {
 		word = word.toUpperCase();
 		log.debug(word + " - analyzing");
 		Set<MorphologyAnalysis> result = new HashSet<MorphologyAnalysis>();
@@ -44,7 +45,7 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 		
 		if (length == 0) {
 			log.debug(word + " unable to analyze.");
-			return null;
+			return result;
 		}
 		
 		log.debug(word + " " + result.size() + " results found.");

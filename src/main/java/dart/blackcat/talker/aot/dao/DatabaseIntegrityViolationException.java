@@ -1,6 +1,8 @@
 package dart.blackcat.talker.aot.dao;
 
-public class DatabaseIntegrityViolationException extends RuntimeException {
+import dart.blackcat.talker.aot.AotException;
+
+public class DatabaseIntegrityViolationException extends AotException {
 
 	private static final long serialVersionUID = -5983435275773438286L;
 

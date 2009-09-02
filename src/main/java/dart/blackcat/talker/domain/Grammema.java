@@ -35,4 +35,5 @@ public enum Grammema {
 	superlative,				// превосходная степень 
 	informal,					// разговорный
 	indicating,					// указательное (наречие)
+	possessive,					// притяжательное (местоимение, прилагательное)
 }

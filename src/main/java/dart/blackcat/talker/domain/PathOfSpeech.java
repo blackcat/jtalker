@@ -16,4 +16,5 @@ public enum PathOfSpeech {
 	interjection,					// междометие
 	particle,						// частица
 	introduction,					// вводное слово
+	phraseology,					// фразеологизм, фразеология
 }

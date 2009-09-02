@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
+import dart.blackcat.talker.aot.AotException;
 import dart.blackcat.talker.domain.Grammema;
 import dart.blackcat.talker.domain.MorphologyAnalysis;
 import dart.blackcat.talker.domain.PathOfSpeech;
@@ -45,20 +46,25 @@ public class AotDao extends JdbcDaoSupport {
 	 * find morphology information by lemma
 	 * @param lemma lemma (immutable word part). must be in UPPER CASE.
 	 * @return {@link HashSet}, can be empty
+	 * @throws AotException if there is any problem
 	 */
 	@SuppressWarnings("unchecked")
-	public Set<MorphologyAnalysis> findWord(final String lemma, final String flexia) {
-		Set<MorphologyAnalysis> result = (Set<MorphologyAnalysis>) getJdbcTemplate().query(FIND_WORD, new PreparedStatementSetter() {
-
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, lemma);
-				ps.setString(2, flexia);
-			}
+	public Set<MorphologyAnalysis> findWord(final String lemma, final String flexia) throws AotException {
+		try {
+			Set<MorphologyAnalysis> result = (Set<MorphologyAnalysis>) getJdbcTemplate().query(FIND_WORD, new PreparedStatementSetter() {
+	
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setString(1, lemma);
+					ps.setString(2, flexia);
+				}
+				
+			}, rse);
 			
-		}, rse);
-		
-		return result;
+			return result;
+		} catch (DataAccessException e) {
+			throw new AotException(e);
+		}
 	}	
 	
 	
@@ -80,7 +86,7 @@ public class AotDao extends JdbcDaoSupport {
 				
 				if (pathOfSpeech != null) {
 					if ( ! pathOfSpeech.equals(pathOfSpeech0)) {
-						throw new DatabaseIntegrityViolationException("Path of speech conflict! " + pathOfSpeech + " vs. " + pathOfSpeech0);
+						throw new SQLException("Path of speech conflict! " + pathOfSpeech + " vs. " + pathOfSpeech0 + " Base=" + base + ", flexia=" + flexia);
 					}
 				}
 				
@@ -89,23 +95,27 @@ public class AotDao extends JdbcDaoSupport {
 				Grammema[] grammemas = new Grammema[st.countTokens() + st0.countTokens()];
 				int i = 0;
 
-				while (st.hasMoreTokens()) {
-					grammemas[i] = string2Grammema(st.nextToken());
-					i++;
-				}
-				while (st0.hasMoreTokens()) {
-					grammemas[i] = string2Grammema(st0.nextToken());
-					i++;
-				}
+				try {
+					while (st.hasMoreTokens()) {
+						grammemas[i] = string2Grammema(st.nextToken());
+						i++;
+					}
+					while (st0.hasMoreTokens()) {
+						grammemas[i] = string2Grammema(st0.nextToken());
+						i++;
+					}
 				
-				result.add(new MorphologyAnalysis("", base, flexia, accentCharNo, string2PathOfSpeech(pathOfSpeech0), grammemas));
+					result.add(new MorphologyAnalysis("", base, flexia, accentCharNo, string2PathOfSpeech(pathOfSpeech0), grammemas));
+				} catch (DatabaseIntegrityViolationException e) {
+					throw new SQLException("Something wrong with DB dictionary. Base=" + base + ", flexia=" + flexia, e);
+				}
 				k++;
 			}
 			
 			return result;
 		}
 		
-		protected PathOfSpeech string2PathOfSpeech(String s) {
+		protected PathOfSpeech string2PathOfSpeech(String s) throws DatabaseIntegrityViolationException {
 			if (s.equals("П")) {
 				return PathOfSpeech.adjective;
 			} else if (s.equals("Н")) {
@@ -130,6 +140,8 @@ public class AotDao extends JdbcDaoSupport {
 				return PathOfSpeech.participle;
 			} else if (s.equals("ЧАСТ")) {
 				return PathOfSpeech.particle;
+			} else if (s.equals("ФРАЗ")) {
+				return PathOfSpeech.phraseology;
 			} else if (s.equals("ПРЕДК")) {
 				return PathOfSpeech.predicateNoun;
 			} else if (s.equals("ПРЕДЛ")) {
@@ -152,7 +164,7 @@ public class AotDao extends JdbcDaoSupport {
 		}
 
 		
-		protected Grammema string2Grammema(String s) {
+		protected Grammema string2Grammema(String s) throws DatabaseIntegrityViolationException {
 			if (s.equals("вн")) {
 				return Grammema.accusative;
 			} else if (s.equals("аббр")) {
@@ -223,6 +235,8 @@ public class AotDao extends JdbcDaoSupport {
 				return Grammema.perfectForm;
 			} else if (s.equals("мн")) {
 				return Grammema.plural;
+			} else if (s.equals("притяж")) {
+				return Grammema.possessive;
 			} else if (s.equals("пр")) {
 				return Grammema.prepositional;
 			} else if (s.equals("нст")) {
