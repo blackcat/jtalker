@@ -40,7 +40,7 @@
 
 <!-- Common project log APPENDER -->
 	<appender name="LOG-FILE-COMMON" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="jtalker-common.log"/>
+		<param name="file" value="log/jtalker-common.log"/>
 		<param name="datePattern" value=".yyyy-MM-dd"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{ISO8601} [%5p] %c %m at %l%n"/>
@@ -83,7 +83,7 @@
 
 <!-- Error log APPENDER -->
 	<appender name="LOG-FILE-ERROR" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="jtalker-error.log"/>
+		<param name="file" value="log/jtalker-error.log"/>
       <param name="datePattern" value=".yyyy-MM-dd"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{ISO8601} [%5p] %c %m at %l%n"/>
