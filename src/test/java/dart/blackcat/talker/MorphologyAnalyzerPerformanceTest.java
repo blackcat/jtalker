@@ -40,13 +40,13 @@ public class MorphologyAnalyzerPerformanceTest {
 		Collection<String> bad = new LinkedHashSet<String>();
 		String text = null;
 		
-		URL url = MorphologyAnalyzerPerformanceTest.class.getResource("/test.txt");
+		URL url = MorphologyAnalyzerPerformanceTest.class.getResource("/0.25test.txt");
 		FileReader fileReader = new FileReader(url.getPath());
 		try {
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			text = bufferedReader.readLine();
 			while (text != null) {
-				StringTokenizer st = new StringTokenizer(text, " ,.-—:;\"\'\\/!?()[]{}@#№$%^&*_+=");
+				StringTokenizer st = new StringTokenizer(text, " ,.—:;\"\'\\/!?()[]{}@#№$%^&*_+=0123456789");
 				
 				while (st.hasMoreTokens()) {
 					String word = st.nextToken();
@@ -71,11 +71,14 @@ public class MorphologyAnalyzerPerformanceTest {
 			fileReader.close();
 		}
 		
-		long elapsedTime = startTime - Calendar.getInstance().getTimeInMillis();
+		long elapsedTime = ( startTime - Calendar.getInstance().getTimeInMillis() ) / -1;
+		log.info("Elapsed time: " + elapsedTime + " ms");
 		log.info("Word processed: " + wordCount);
 		log.info("Processed succefully: " + good);
 		log.info("Processed unsuccefully: " + bad.size());
-		log.info("Elapsed time: " + elapsedTime);
+		log.info("Unsuccefully %: " + bad.size() * 100.000 / wordCount);
+		log.info("One word analyze average time: " + elapsedTime * 1.000 / wordCount);
+		log.info("Words per second: " + wordCount * 1000.000 / elapsedTime);
 		
 		log.error(bad);
 	}

@@ -12,3 +12,6 @@
 # Ignore all dotfiles... except for .gitignore
 .*
 !.gitignore
+
+# Ignore maven target/classes/
+target/classes/*
