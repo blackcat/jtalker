@@ -13,5 +13,5 @@
 .*
 !.gitignore
 
-# Ignore maven target/classes/
-target/classes/*
+# Ignore maven target/*
+target/*
