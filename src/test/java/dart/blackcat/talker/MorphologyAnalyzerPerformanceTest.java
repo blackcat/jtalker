@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -39,7 +40,7 @@ public class MorphologyAnalyzerPerformanceTest {
 		long startTime = Calendar.getInstance().getTimeInMillis();
 		int wordCount = 0;
 		int good = 0;
-		Collection<String> bad = new LinkedHashSet<String>();
+		Collection<String> bad = new ArrayList<String>();
 		String text = null;
 		
 		URL url = MorphologyAnalyzerPerformanceTest.class.getResource("/0.25test.txt");
@@ -86,7 +87,8 @@ public class MorphologyAnalyzerPerformanceTest {
 		log.info("One word analyze average time: " + elapsedTime * 1.000 / wordCount);
 		log.info("Words per second: " + wordCount * 1000.000 / elapsedTime);
 		
-		log.error(bad);
+		Set<String> badSet = new LinkedHashSet<String>(bad);
+		log.error(badSet);
 	}
 
 }
