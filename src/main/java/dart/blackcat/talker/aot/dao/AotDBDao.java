@@ -115,4 +115,13 @@ public class AotDBDao extends AbstractAotDao {
 		
 
 	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Set<String> getPrefixes() throws DataAccessException {
+		Set<String> result = new HashSet<String>();
+		result.addAll(getJdbcTemplate().queryForList("SELECT prefix_str FROM prefix_set;", String.class));
+		return result;
+	}
 }

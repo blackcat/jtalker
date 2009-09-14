@@ -20,8 +20,8 @@ import dart.blackcat.talker.domain.MorphologyAnalysis;
 
 public class AotInMemoryDao extends AbstractAotDao {
 	
-	private Map<LemmataKey, LemmataObj> lemmata = new HashMap<LemmataKey, LemmataObj>();
-	private Map<FlexiaKey, FlexiaObj> flexia = new HashMap<FlexiaKey, FlexiaObj>();
+	private Map<String, LemmataObj> lemmata = new HashMap<String, LemmataObj>();
+	private Map<Integer, FlexiaObj> flexia = new HashMap<Integer, FlexiaObj>();
 	private Map<String, Object> ancode = new HashMap<String, Object>();
 	private Map<Integer, Object> accent = new HashMap<Integer, Object>();
 	
@@ -45,13 +45,11 @@ public class AotInMemoryDao extends AbstractAotDao {
 					Matcher matcher = pattern.matcher(text);
 					matcher.find();
 					LemmataObj lemmataObj = new LemmataObj();
-					LemmataKey lemmataKey = new LemmataKey();
-					lemmataKey.flexiaId = Integer.valueOf(matcher.group(2));
-					lemmataKey.baseId   = matcher.group(1);
+					lemmataObj.flexiaId = Integer.valueOf(matcher.group(2));
 					lemmataObj.accentId = Integer.valueOf(matcher.group(3));
 					lemmataObj.prefixId = Integer.valueOf(matcher.group(4));
 					lemmataObj.ancodeId = matcher.group(5);
-					lemmata.put(lemmataKey, lemmataObj);
+					lemmata.put(matcher.group(1), lemmataObj);
 					text = bufferedReader.readLine();
 				}
 			} finally {
@@ -73,12 +71,10 @@ public class AotInMemoryDao extends AbstractAotDao {
 					Matcher matcher = pattern.matcher(text);
 					matcher.find();
 					FlexiaObj flexiaObj = new FlexiaObj();
-					FlexiaKey flexiaKey = new FlexiaKey();
-					flexiaKey.formNo = Integer.valueOf(matcher.group(2));
-					flexiaKey.flexiaId = Integer.valueOf(matcher.group(1));
+					flexiaObj.formNo = Integer.valueOf(matcher.group(2));
 					flexiaObj.flexia = matcher.group(3);
 					flexiaObj.ancodeId = matcher.group(4);
-					flexia.put(flexiaKey, flexiaObj);
+					flexia.put(Integer.valueOf(matcher.group(1)), flexiaObj);
 					text = bufferedReader.readLine();
 				}
 			} finally {
@@ -118,10 +114,8 @@ public class AotInMemoryDao extends AbstractAotDao {
 	
 	@Override
 	public Set<MorphologyAnalysis> findWord(String lemma, String flexia) throws AotException {
-		LemmataKey key = new LemmataKey();
-		key.baseId = lemma;
-		key.flexiaId = flexia;
-		lemmata.get(lemma);
+		lemmata.get(lemma);//TODO
+		return null;
 	}
 
 	
@@ -182,64 +176,17 @@ public class AotInMemoryDao extends AbstractAotDao {
 		}
 	}
 	
-	protected class FlexiaKey {
-		private Integer flexiaId;
+	protected class FlexiaObj {
 		private Integer formNo;
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + getOuterType().hashCode();
-			result = prime * result
-					+ ((flexiaId == null) ? 0 : flexiaId.hashCode());
-			result = prime * result
-					+ ((formNo == null) ? 0 : formNo.hashCode());
-			return result;
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			FlexiaKey other = (FlexiaKey) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
-			if (flexiaId == null) {
-				if (other.flexiaId != null)
-					return false;
-			} else if (!flexiaId.equals(other.flexiaId))
-				return false;
-			if (formNo == null) {
-				if (other.formNo != null)
-					return false;
-			} else if (!formNo.equals(other.formNo))
-				return false;
-			return true;
-		}
-		public Integer getFlexiaId() {
-			return flexiaId;
-		}
-		public void setFlexiaId(Integer flexiaId) {
-			this.flexiaId = flexiaId;
-		}
+		private String prefix;
+		private String flexia;
+		private String ancodeId;
 		public Integer getFormNo() {
 			return formNo;
 		}
 		public void setFormNo(Integer formNo) {
 			this.formNo = formNo;
 		}
-		private AotInMemoryDao getOuterType() {
-			return AotInMemoryDao.this;
-		}
-	}
-	
-	protected class FlexiaObj {
-		private String prefix;
-		private String flexia;
-		private String ancodeId;
 		public String getPrefix() {
 			return prefix;
 		}
@@ -258,9 +205,6 @@ public class AotInMemoryDao extends AbstractAotDao {
 		public void setAncodeId(String ancodeId) {
 			this.ancodeId = ancodeId;
 		}
-		private AotInMemoryDao getOuterType() {
-			return AotInMemoryDao.this;
-		}
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -270,6 +214,8 @@ public class AotInMemoryDao extends AbstractAotDao {
 					+ ((ancodeId == null) ? 0 : ancodeId.hashCode());
 			result = prime * result
 					+ ((flexia == null) ? 0 : flexia.hashCode());
+			result = prime * result
+					+ ((formNo == null) ? 0 : formNo.hashCode());
 			result = prime * result
 					+ ((prefix == null) ? 0 : prefix.hashCode());
 			return result;
@@ -295,6 +241,11 @@ public class AotInMemoryDao extends AbstractAotDao {
 					return false;
 			} else if (!flexia.equals(other.flexia))
 				return false;
+			if (formNo == null) {
+				if (other.formNo != null)
+					return false;
+			} else if (!formNo.equals(other.formNo))
+				return false;
 			if (prefix == null) {
 				if (other.prefix != null)
 					return false;
@@ -302,66 +253,22 @@ public class AotInMemoryDao extends AbstractAotDao {
 				return false;
 			return true;
 		}
-	}
-	
-	protected class LemmataKey {
-		private String baseId;
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + getOuterType().hashCode();
-			result = prime * result
-					+ ((baseId == null) ? 0 : baseId.hashCode());
-			result = prime * result
-					+ ((flexiaId == null) ? 0 : flexiaId.hashCode());
-			return result;
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			LemmataKey other = (LemmataKey) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
-			if (baseId == null) {
-				if (other.baseId != null)
-					return false;
-			} else if (!baseId.equals(other.baseId))
-				return false;
-			if (flexiaId == null) {
-				if (other.flexiaId != null)
-					return false;
-			} else if (!flexiaId.equals(other.flexiaId))
-				return false;
-			return true;
-		}
-		public String getBaseId() {
-			return baseId;
-		}
-		public void setBaseId(String baseId) {
-			this.baseId = baseId;
-		}
-		private Integer flexiaId;
-		public Integer getFlexiaId() {
-			return flexiaId;
-		}
-		public void setFlexiaId(Integer flexiaId) {
-			this.flexiaId = flexiaId;
-		}
 		private AotInMemoryDao getOuterType() {
 			return AotInMemoryDao.this;
 		}
 	}
 	
 	protected class LemmataObj {
+		private Integer flexiaId;
 		private Integer accentId;
 		private Integer prefixId;
 		private String	ancodeId;
+		public Integer getFlexiaId() {
+			return flexiaId;
+		}
+		public void setFlexiaId(Integer flexiaId) {
+			this.flexiaId = flexiaId;
+		}
 		public Integer getAccentId() {
 			return accentId;
 		}
@@ -390,6 +297,8 @@ public class AotInMemoryDao extends AbstractAotDao {
 			result = prime * result
 					+ ((ancodeId == null) ? 0 : ancodeId.hashCode());
 			result = prime * result
+					+ ((flexiaId == null) ? 0 : flexiaId.hashCode());
+			result = prime * result
 					+ ((prefixId == null) ? 0 : prefixId.hashCode());
 			return result;
 		}
@@ -414,6 +323,11 @@ public class AotInMemoryDao extends AbstractAotDao {
 					return false;
 			} else if (!ancodeId.equals(other.ancodeId))
 				return false;
+			if (flexiaId == null) {
+				if (other.flexiaId != null)
+					return false;
+			} else if (!flexiaId.equals(other.flexiaId))
+				return false;
 			if (prefixId == null) {
 				if (other.prefixId != null)
 					return false;
@@ -425,5 +339,11 @@ public class AotInMemoryDao extends AbstractAotDao {
 			return AotInMemoryDao.this;
 		}
 		
+	}
+
+	@Override
+	public Set<String> getPrefixes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

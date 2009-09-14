@@ -1,6 +1,7 @@
 package dart.blackcat.talker.aot;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -20,9 +21,14 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 	private static final Log log = LogFactory.getLog(AotMorphologyAnalyzer.class);
 	
 	private AotDBDao aotDao;
+	private Set<String> prefixes;
 
 	public void setAotDao(AotDBDao aotDao) {
 		this.aotDao = aotDao;
+	}
+	
+	public void init() {
+		prefixes = aotDao.getPrefixes();
 	}
 
 	/**
@@ -36,6 +42,24 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 		word = word.toUpperCase();
 		log.debug(word + " - analyzing");
 		Set<MorphologyAnalysis> result = new HashSet<MorphologyAnalysis>();
+		
+		if ( ! word.isEmpty()) {
+			result = analyze0(word);
+			
+			if (result.isEmpty()) {
+				word = cutPrefix(word);
+				if (word != null) {
+					result = analyze0(word);
+				}
+			}
+		}
+		
+		log.debug(word + " " + result.size() + " results found.");
+		return result;
+	}
+	
+	protected Set<MorphologyAnalysis> analyze0(String word) throws AotException {
+		Set<MorphologyAnalysis> result = new HashSet<MorphologyAnalysis>();
 		int length = word.length();
 
 		while (result.isEmpty() && length >= 0) {
@@ -43,12 +67,20 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 			length--;
 		}
 		
-		if (length == 0) {
-			log.debug(word + " unable to analyze.");
-			return result;
-		}
-		
-		log.debug(word + " " + result.size() + " results found.");
 		return result;
 	}
+	
+	/**
+	 * cut prefix or return null if unable
+	 */
+	protected String cutPrefix(String word) {
+		for (Iterator<String> i = prefixes.iterator(); i.hasNext();) {
+			String prefix = i.next();
+			if (word.startsWith(prefix)) {
+				return word.substring(prefix.length());
+			}
+		}
+		return null;
+	}
+	
 }

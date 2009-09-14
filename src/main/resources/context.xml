@@ -23,12 +23,13 @@
  		<bean id="aotDBDao"			class="dart.blackcat.talker.aot.dao.AotDBDao">
  			<property name="dataSource"	ref="dataSource"/>
  		</bean>
- 		<bean id="aotInMemoryDao"	class="dart.blackcat.talker.aot.dao.AotInMemoryDao">
+ 		<!-- <bean id="aotInMemoryDao"	class="dart.blackcat.talker.aot.dao.AotInMemoryDao">
+ 			<property name="dataSource"	ref="dataSource"/>
 			<constructor-arg value="/lemmata.backup"/>
 			<constructor-arg value="/flexia.backup"/>
 			<constructor-arg value="/ancode.backup"/>
 			<constructor-arg value="/lemmata.backup"/>
- 		</bean>
+ 		</bean> -->
  	<!-- /DAO -->
  	
  	
