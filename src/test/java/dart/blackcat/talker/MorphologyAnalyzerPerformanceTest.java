@@ -52,15 +52,18 @@ public class MorphologyAnalyzerPerformanceTest {
 				
 				while (st.hasMoreTokens()) {
 					String word = st.nextToken();
-					Set<MorphologyAnalysis> set = morphologyAnalyzer.analyze(word);
 					
-					wordCount++;
-					log.info(set);
-					
-					if (set.isEmpty()) {
-						bad.add(word);
-					} else {
-						good++;
+					if ( ! word.replace("-", "").isEmpty()) {
+						Set<MorphologyAnalysis> set = morphologyAnalyzer.analyze(word);
+						
+						wordCount++;
+						log.info(set);
+						
+						if (set.isEmpty()) {
+							bad.add(word);
+						} else {
+							good++;
+						}
 					}
 				}
 				

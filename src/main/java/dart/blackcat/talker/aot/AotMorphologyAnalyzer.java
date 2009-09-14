@@ -3,7 +3,9 @@ package dart.blackcat.talker.aot;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,6 +14,7 @@ import dart.blackcat.talker.aot.dao.AbstractAotDao;
 import dart.blackcat.talker.aot.dao.AotDBDao;
 import dart.blackcat.talker.domain.MorphologyAnalysis;
 import dart.blackcat.talker.domain.MorphologyAnalyzer;
+import dart.blackcat.talker.util.StringLengthComparator;
 
 /**
  * {@link MorphologyAnalysis} factory
@@ -23,14 +26,14 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 	private static final Log log = LogFactory.getLog(AotMorphologyAnalyzer.class);
 	
 	private AbstractAotDao aotDao;
-	private Set<String> prefixes;
+	private SortedSet<String> prefixes = new TreeSet<String>(new StringLengthComparator(false));
 
 	public void setAotDao(AotDBDao aotDao) {
 		this.aotDao = aotDao;
 	}
 	
 	public void init() {
-		prefixes = aotDao.getPrefixes();
+		prefixes.addAll(aotDao.getPrefixes());
 	}
 
 	/**
