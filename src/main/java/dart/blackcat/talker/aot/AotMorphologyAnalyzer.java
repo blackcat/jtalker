@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import dart.blackcat.talker.aot.dao.AbstractAotDao;
 import dart.blackcat.talker.aot.dao.AotDBDao;
 import dart.blackcat.talker.domain.MorphologyAnalysis;
 import dart.blackcat.talker.domain.MorphologyAnalyzer;
@@ -20,7 +21,7 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 	
 	private static final Log log = LogFactory.getLog(AotMorphologyAnalyzer.class);
 	
-	private AotDBDao aotDao;
+	private AbstractAotDao aotDao;
 	private Set<String> prefixes;
 
 	public void setAotDao(AotDBDao aotDao) {
