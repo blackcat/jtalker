@@ -48,9 +48,10 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 			result = analyze0(word);
 			
 			if (result.isEmpty()) {
-				word = cutPrefix(word);
-				if (word != null) {
-					result = analyze0(word);
+				String wordWithOutPrefix = cutPrefix(word);
+				
+				if (wordWithOutPrefix != null) {
+					result = analyze0(wordWithOutPrefix);
 				}
 			}
 		}

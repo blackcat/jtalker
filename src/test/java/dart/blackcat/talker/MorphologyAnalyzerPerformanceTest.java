@@ -50,14 +50,27 @@ public class MorphologyAnalyzerPerformanceTest {
 				
 				while (st.hasMoreTokens()) {
 					String word = st.nextToken();
-					Set<MorphologyAnalysis> set = morphologyAnalyzer.analyze(word);
-					wordCount++;
-					log.info(set);
 					
-					if (set.isEmpty()) {
-						bad.add(word);
-					} else {
-						good++;
+					if ( ! word.replace("-", "").isEmpty()) {
+					
+						Set<MorphologyAnalysis> set = morphologyAnalyzer.analyze(word);
+						
+						if (set.isEmpty() && word.contains("-")) {
+							StringTokenizer st1 = new StringTokenizer(word, "-");
+							String token = null;
+							while (st1.hasMoreTokens()) {
+								token = st1.nextToken();
+							}
+							set = morphologyAnalyzer.analyze(token);
+						}
+						wordCount++;
+						log.info(set);
+						
+						if (set.isEmpty()) {
+							bad.add(word);
+						} else {
+							good++;
+						}
 					}
 				}
 				
