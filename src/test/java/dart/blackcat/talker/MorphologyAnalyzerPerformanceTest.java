@@ -15,24 +15,26 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import dart.blackcat.talker.aot.AotException;
-import dart.blackcat.talker.aot.AotMorphologyAnalyzer;
 import dart.blackcat.talker.domain.MorphologyAnalysis;
+import dart.blackcat.talker.domain.MorphologyAnalyzer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:context.xml"})
 public class MorphologyAnalyzerPerformanceTest {
 
 	@Autowired
-	AotMorphologyAnalyzer morphologyAnalyzer;
+	@Qualifier("morphologyAnalyzerQueue")
+	MorphologyAnalyzer morphologyAnalyzer;
 	
 	private static final Log log = LogFactory.getLog(MorphologyAnalyzerPerformanceTest.class);
 	
 	@Test
-	public void testAnalyze() throws IOException, AotException {
+	public void testAnalyze() throws IOException, JTalkerException {
 		
 		long startTime = Calendar.getInstance().getTimeInMillis();
 		int wordCount = 0;
@@ -50,27 +52,15 @@ public class MorphologyAnalyzerPerformanceTest {
 				
 				while (st.hasMoreTokens()) {
 					String word = st.nextToken();
+					Set<MorphologyAnalysis> set = morphologyAnalyzer.analyze(word);
 					
-					if ( ! word.replace("-", "").isEmpty()) {
+					wordCount++;
+					log.info(set);
 					
-						Set<MorphologyAnalysis> set = morphologyAnalyzer.analyze(word);
-						
-						if (set.isEmpty() && word.contains("-")) {
-							StringTokenizer st1 = new StringTokenizer(word, "-");
-							String token = null;
-							while (st1.hasMoreTokens()) {
-								token = st1.nextToken();
-							}
-							set = morphologyAnalyzer.analyze(token);
-						}
-						wordCount++;
-						log.info(set);
-						
-						if (set.isEmpty()) {
-							bad.add(word);
-						} else {
-							good++;
-						}
+					if (set.isEmpty()) {
+						bad.add(word);
+					} else {
+						good++;
 					}
 				}
 				

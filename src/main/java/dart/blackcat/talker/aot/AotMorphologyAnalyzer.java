@@ -3,6 +3,7 @@ package dart.blackcat.talker.aot;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,7 +45,8 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 		log.debug(word + " - analyzing");
 		Set<MorphologyAnalysis> result = new HashSet<MorphologyAnalysis>();
 		
-		if ( ! word.isEmpty()) {
+
+		if ( ! word.isEmpty() && ! word.replace("-", "").isEmpty()) {
 			result = analyze0(word);
 			
 			if (result.isEmpty()) {
@@ -53,6 +55,15 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 				if (wordWithOutPrefix != null) {
 					result = analyze0(wordWithOutPrefix);
 				}
+			}
+			
+			if (result.isEmpty() && word.contains("-")) {
+				StringTokenizer st1 = new StringTokenizer(word, "-");
+				String token = null;
+				while (st1.hasMoreTokens()) {
+					token = st1.nextToken();
+				}
+				result = analyze0(token);
 			}
 		}
 		

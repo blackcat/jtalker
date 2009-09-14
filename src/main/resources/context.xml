@@ -35,15 +35,20 @@
  	
  	<!-- Morphology -->
  		<bean id="morphologyAnalyzerQueue"	class="dart.blackcat.talker.domain.MorphologyAnalyzerQueue">
+ 			<qualifier value="morphologyAnalyzerQueue"/>
  			<property name="analyzers">
  				<list>
- 					<ref bean="morphologyAnalyzer"/>
+ 					<ref bean="aotMorphologyAnalyzer"/>
  				</list>
  			</property>
  		</bean>
  		
- 		<bean id="morphologyAnalyzer"		class="dart.blackcat.talker.aot.AotMorphologyAnalyzer">
+ 		<bean id="aotMorphologyAnalyzer"		class="dart.blackcat.talker.aot.AotMorphologyAnalyzer">
  			<property name="aotDao"			ref="aotDBDao"/>
+ 		</bean>
+ 		
+ 		<bean id="textAnalyzer"				class="dart.blackcat.talker.domain.TextAnalyzer">
+ 			<property name="morphologyAnalyzer"	ref="morphologyAnalyzerQueue"/>
  		</bean>
  	<!-- /Morphology -->
  
