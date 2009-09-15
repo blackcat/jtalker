@@ -30,8 +30,8 @@ public class MorphologyAnalyzerTest {
 	@Test
 	public void testAnalyze() throws JTalkerException {
 		
-//		String text = "Морфологический анализатор для русского языка — это что-то заумное? Программа, которая приводит слово к начальной форме, определяет падеж, находит словоформы — непонятно, как и подступиться? А на самом деле все не так и сложно. В статье — как я писал аналог mystem, lemmatizer и phpmorphy на Python, и что из этого получилось.";
-		String text = "двухэтажный";
+		String text = "Морфологический анализатор для русского языка — это что-то заумное? Программа, которая приводит слово к начальной форме, определяет падеж, находит словоформы — непонятно, как и подступиться? А на самом деле все не так и сложно. В статье — как я писал аналог mystem, lemmatizer и phpmorphy на Python, и что из этого получилось.";
+//		String text = "двухэтажный";
 		StringTokenizer st = new StringTokenizer(text, " ,.-—:;\"\'\\/!?()[]{}@#№$%^&*_+=");
 		Map<String, Set<MorphologyAnalysis>> result = new LinkedHashMap<String, Set<MorphologyAnalysis>>();
 		

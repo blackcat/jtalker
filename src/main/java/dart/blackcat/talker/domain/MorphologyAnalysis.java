@@ -72,6 +72,34 @@ public class MorphologyAnalysis implements Serializable {
 		return accentCharNo;
 	}
 
+	public byte getAccentCharNo() {
+		return accentCharNo;
+	}
+
+	public void setAccentCharNo(byte accentCharNo) {
+		this.accentCharNo = accentCharNo;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+	public void setBase(String base) {
+		this.base = base;
+	}
+
+	public void setFlexia(String flexia) {
+		this.flexia = flexia;
+	}
+
+	public void setPathOfSpeech(PathOfSpeech pathOfSpeech) {
+		this.pathOfSpeech = pathOfSpeech;
+	}
+
+	public void setGrammemas(Grammema[] grammemas) {
+		this.grammemas = grammemas;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

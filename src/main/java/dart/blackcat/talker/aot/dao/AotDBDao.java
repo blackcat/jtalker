@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -37,6 +38,21 @@ public class AotDBDao extends AbstractAotDao {
 		"	left join ancode a on a.ancode = l.ancode		\n" +
 		"	left join ancode a0 on a0.ancode = fm.ancode	\n" +
 		"where	l.base_str = ? and fm.flexia_str = ?		\n";
+	
+	protected static final String FIND_BY_FLEXIA = 
+		"SELECT 							\n" +
+		"	'', 							\n" +
+		"	'', 							\n" +
+		"	NULL, 							\n" +
+		"	NULL, 							\n" +
+		"	a.path_of_speech, 				\n" +
+		"	'', 							\n" +
+		"	a.grammems 						\n" +
+		"FROM  								\n" +
+		"	flexia_model fm 				\n" +
+		"	LEFT JOIN ancode a ON fm.ancode = a.ancode		\n" +
+		"WHERE 								\n" +
+		"	fm.flexia_str = ? --and a.path_of_speech = 'С' 	\n";
 	
 	protected AotResultSetExtractor rse = new AotResultSetExtractor();
 
@@ -123,5 +139,31 @@ public class AotDBDao extends AbstractAotDao {
 		Set<String> result = new HashSet<String>();
 		result.addAll(getJdbcTemplate().queryForList("SELECT prefix_str FROM prefix_set;", String.class));
 		return result;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Set<MorphologyAnalysis> findWordByFlexia(String lemma, final String flexia) throws AotException {
+		try {
+			Set<MorphologyAnalysis> result = (Set<MorphologyAnalysis>) getJdbcTemplate().query(FIND_BY_FLEXIA, new PreparedStatementSetter() {
+	
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setString(1, flexia);
+				}
+				
+			}, rse);
+			
+			for (Iterator<MorphologyAnalysis> i = result.iterator(); i.hasNext();) {
+				MorphologyAnalysis morphologyAnalysis = i.next();
+				morphologyAnalysis.setBase(lemma);
+				morphologyAnalysis.setFlexia(flexia);
+			}
+			
+			return result;
+		} catch (DataAccessException e) {
+			throw new AotException(e);
+		}
 	}
 }

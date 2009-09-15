@@ -346,4 +346,10 @@ public class AotInMemoryDao extends AbstractAotDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Set<MorphologyAnalysis> findWordByFlexia(String lemma, String flexia) throws AotException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

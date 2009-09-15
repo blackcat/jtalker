@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import dart.blackcat.talker.aot.dao.AbstractAotDao;
 import dart.blackcat.talker.aot.dao.AotDBDao;
@@ -28,6 +29,11 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 	private AbstractAotDao aotDao;
 	private SortedSet<String> prefixes = new TreeSet<String>(new StringLengthComparator(false));
 
+	/**
+	 * required
+	 * @param aotDao
+	 */
+	@Required
 	public void setAotDao(AotDBDao aotDao) {
 		this.aotDao = aotDao;
 	}

@@ -44,7 +44,12 @@
  		</bean>
  		
  		<bean id="aotMorphologyAnalyzer"		class="dart.blackcat.talker.aot.AotMorphologyAnalyzer">
- 			<property name="aotDao"			ref="aotDBDao"/>
+ 			<property name="aotDao"				ref="aotDBDao"/>
+ 		</bean>
+ 		
+ 		<bean id="aotHeuristicAnalizer"		class="dart.blackcat.talker.aot.AotHeuristicAnalizer">
+ 			<property name="aotDao"				ref="aotDBDao"/>
+ 			<property name="morphologyAnalyzer"	ref="aotMorphologyAnalyzer"/>
  		</bean>
  		
  		<bean id="textAnalyzer"				class="dart.blackcat.talker.domain.TextAnalyzer">
