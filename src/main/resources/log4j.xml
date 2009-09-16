@@ -105,7 +105,7 @@
 
   
 	<root>
-		<level value="DEBUG"/>
+		<level value="INFO"/>
 		<appender-ref ref="CONSOLE-WARN"/>
 		<appender-ref ref="CONSOLE-DEBUG"/>
 		<appender-ref ref="LOG-FILE-COMMON"/>
