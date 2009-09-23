@@ -32,8 +32,8 @@ public class TextParser {
 	 */
 	public Sentence getSentence() throws IOException {
 		int currentChar = 0;
-//		char previousChar = 0;
 		StringBuffer sentenceString = new StringBuffer();
+		StringBuffer eosString = new StringBuffer();
 		boolean currentCharIsASentenceDelim = false;
 		boolean previousCharIsASentenceDelim = false;
 
@@ -44,13 +44,16 @@ public class TextParser {
 			for (int i = 0; i < SENTENCE_DELIMETERS.length; i++) {
 				if (SENTENCE_DELIMETERS[i] == currentChar) {
 					currentCharIsASentenceDelim = true;
+					eosString.append((char) currentChar);
 				}
 			}
 
-			sentenceString.append((char) currentChar);
-			
-			if ( ! currentCharIsASentenceDelim && previousCharIsASentenceDelim) {
-				return new Sentence(sentenceString.toString().trim());
+			if ( ! currentCharIsASentenceDelim) {
+				sentenceString.append((char) currentChar);
+				
+				if (previousCharIsASentenceDelim) {
+					return new Sentence(sentenceString.toString(), eosString.toString());
+				}
 			}
 			
 			previousCharIsASentenceDelim = currentCharIsASentenceDelim;
