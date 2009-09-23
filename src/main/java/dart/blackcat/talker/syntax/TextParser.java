@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import dart.blackcat.talker.domain.Sentence;
+
 /**
  * Text parser. 
  * @author pvyazankin

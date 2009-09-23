@@ -10,8 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
+import dart.blackcat.talker.domain.Sentence;
 import dart.blackcat.talker.syntax.TextParser;
-import dart.blackcat.talker.syntax.Sentence;
 
 public class TextParserTest {
 	private static final Log log = LogFactory.getLog(TextParserTest.class);
