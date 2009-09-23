@@ -13,8 +13,8 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import dart.blackcat.talker.aot.AotException;
-import dart.blackcat.talker.domain.Grammema;
-import dart.blackcat.talker.domain.MorphologyAnalysis;
+import dart.blackcat.talker.morph.Grammema;
+import dart.blackcat.talker.morph.MorphologyAnalysis;
 import dart.blackcat.talker.util.StringUtils;
 
 public class AotDBDao extends AbstractAotDao {

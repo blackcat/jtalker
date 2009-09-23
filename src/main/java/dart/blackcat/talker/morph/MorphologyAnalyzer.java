@@ -1,9 +1,14 @@
-package dart.blackcat.talker.domain;
+package dart.blackcat.talker.morph;
 
 import java.util.Set;
 
 import dart.blackcat.talker.JTalkerException;
 
+/**
+ * Commot morphology analyzer interface
+ * @author pvyazankin
+ *
+ */
 public interface MorphologyAnalyzer {
 
 	/**

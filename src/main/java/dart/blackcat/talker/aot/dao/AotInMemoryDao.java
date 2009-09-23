@@ -16,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import dart.blackcat.talker.MorphologyAnalyzerPerformanceTest;
 import dart.blackcat.talker.aot.AotException;
-import dart.blackcat.talker.domain.MorphologyAnalysis;
+import dart.blackcat.talker.morph.MorphologyAnalysis;
 
 public class AotInMemoryDao extends AbstractAotDao {
 	

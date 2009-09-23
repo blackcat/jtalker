@@ -22,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import dart.blackcat.talker.aot.AotHeuristicAnalizer;
-import dart.blackcat.talker.domain.MorphologyAnalysis;
+import dart.blackcat.talker.morph.MorphologyAnalysis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:context.xml"})

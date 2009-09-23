@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import dart.blackcat.talker.aot.dao.AbstractAotDao;
 import dart.blackcat.talker.aot.dao.AotDBDao;
-import dart.blackcat.talker.domain.MorphologyAnalysis;
-import dart.blackcat.talker.domain.MorphologyAnalyzer;
+import dart.blackcat.talker.morph.MorphologyAnalysis;
+import dart.blackcat.talker.morph.MorphologyAnalyzer;
 import dart.blackcat.talker.util.StringLengthComparator;
 
 /**

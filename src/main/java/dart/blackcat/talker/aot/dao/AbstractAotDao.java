@@ -5,9 +5,9 @@ import java.util.Set;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import dart.blackcat.talker.aot.AotException;
-import dart.blackcat.talker.domain.Grammema;
-import dart.blackcat.talker.domain.MorphologyAnalysis;
-import dart.blackcat.talker.domain.PathOfSpeech;
+import dart.blackcat.talker.morph.Grammema;
+import dart.blackcat.talker.morph.MorphologyAnalysis;
+import dart.blackcat.talker.morph.PathOfSpeech;
 
 
 public abstract class AbstractAotDao extends JdbcDaoSupport {

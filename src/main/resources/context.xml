@@ -19,22 +19,9 @@
                       
        default-init-method="init">
  
- 	<!-- DAO -->
- 		<bean id="aotDBDao"			class="dart.blackcat.talker.aot.dao.AotDBDao">
- 			<property name="dataSource"	ref="dataSource"/>
- 		</bean>
- 		<!-- <bean id="aotInMemoryDao"	class="dart.blackcat.talker.aot.dao.AotInMemoryDao">
- 			<property name="dataSource"	ref="dataSource"/>
-			<constructor-arg value="/lemmata.backup"/>
-			<constructor-arg value="/flexia.backup"/>
-			<constructor-arg value="/ancode.backup"/>
-			<constructor-arg value="/lemmata.backup"/>
- 		</bean> -->
- 	<!-- /DAO -->
- 	
  	
  	<!-- Morphology -->
- 		<bean id="morphologyAnalyzerQueue"	class="dart.blackcat.talker.domain.MorphologyAnalyzerQueue">
+ 		<bean id="morphologyAnalyzerQueue"	class="dart.blackcat.talker.morph.MorphologyAnalyzerQueue">
  			<qualifier value="morphologyAnalyzerQueue"/>
  			<property name="analyzers">
  				<list>
@@ -52,10 +39,38 @@
  			<property name="morphologyAnalyzer"	ref="aotMorphologyAnalyzer"/>
  		</bean>
  		
- 		<bean id="textAnalyzer"				class="dart.blackcat.talker.domain.TextAnalyzer">
+ 		<bean id="textAnalyzer"					class="dart.blackcat.talker.domain.TextAnalyzer">
  			<property name="morphologyAnalyzer"	ref="morphologyAnalyzerQueue"/>
  		</bean>
+ 		
+ 		<bean id="aotDBDao"			class="dart.blackcat.talker.aot.dao.AotDBDao">
+ 			<property name="dataSource"	ref="dataSource"/>
+ 		</bean>
+ 		
+ 		<!-- <bean id="aotInMemoryDao"	class="dart.blackcat.talker.aot.dao.AotInMemoryDao">
+ 			<property name="dataSource"	ref="dataSource"/>
+			<constructor-arg value="/lemmata.backup"/>
+			<constructor-arg value="/flexia.backup"/>
+			<constructor-arg value="/ancode.backup"/>
+			<constructor-arg value="/lemmata.backup"/>
+ 		</bean> -->
  	<!-- /Morphology -->
+ 	
+ 	
+ 	
+ 	<!-- Syntax -->
+ 		<bean id="aotSyntacticAnalyzer"			class="dart.blackcat.talker.aot.AotSyntacticAnalyzer">
+ 		</bean>
+ 		
+ 		<bean id="syntacticAnalyzerQueue"	class="dart.blackcat.talker.syntax.SyntacticAnalyzerQueue">
+ 			<qualifier value="syntacticAnalyzerQueue"/>
+ 			<property name="analyzers">
+ 				<list>
+ 					<ref bean="aotSyntacticAnalyzer"/>
+ 				</list>
+ 			</property>
+ 		</bean>
+ 	<!-- /Syntax -->
  
    
    

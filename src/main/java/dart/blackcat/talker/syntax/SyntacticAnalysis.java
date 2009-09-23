@@ -1,4 +1,4 @@
-package dart.blackcat.talker.domain;
+package dart.blackcat.talker.syntax;
 
 import java.io.Serializable;
 

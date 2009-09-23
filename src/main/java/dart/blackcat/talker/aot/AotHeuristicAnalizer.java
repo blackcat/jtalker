@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.Assert;
 
 import dart.blackcat.talker.aot.dao.AbstractAotDao;
-import dart.blackcat.talker.domain.MorphologyAnalysis;
-import dart.blackcat.talker.domain.MorphologyAnalyzer;
+import dart.blackcat.talker.morph.MorphologyAnalysis;
+import dart.blackcat.talker.morph.MorphologyAnalyzer;
 
 public class AotHeuristicAnalizer implements MorphologyAnalyzer {
 	
