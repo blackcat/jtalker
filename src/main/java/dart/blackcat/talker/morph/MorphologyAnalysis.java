@@ -1,9 +1,8 @@
 package dart.blackcat.talker.morph;
 
-import static org.springframework.util.Assert.*;
+import static org.springframework.util.Assert.notNull;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 
 public class MorphologyAnalysis implements Serializable {
@@ -14,7 +13,8 @@ public class MorphologyAnalysis implements Serializable {
 	private String flexia;
 	private byte accentCharNo;
 	private PathOfSpeech pathOfSpeech;
-	private Grammema[] grammemas;
+//	private Grammema[] grammemas;
+	private long grammemas;
 	
 	public MorphologyAnalysis(
 			String prefix,
@@ -22,14 +22,15 @@ public class MorphologyAnalysis implements Serializable {
 			String flexia,
 			byte accentCharNo,
 			PathOfSpeech pathOfSpeech,
-			Grammema[] grammemas
+//			Grammema[] grammemas
+			long grammemas
 			) {
 		notNull(prefix, "Prefix can't be null.");
 		notNull(base, "Base can't be null.");
 		notNull(flexia, "Flexia can't be null.");
 		notNull(pathOfSpeech, "Path of speeck can't be null.");
 		notNull(grammemas, "Grammemas array can't be null.");
-		noNullElements(grammemas, "Grammemas array can't contain null elements.");
+//		noNullElements(grammemas, "Grammemas array can't contain null elements.");
 		
 		this.prefix = prefix;
 		this.base = base;
@@ -45,7 +46,7 @@ public class MorphologyAnalysis implements Serializable {
 	
 	@Override
 	public String toString() {
-		return prefix + "-" + base + "-" + flexia + " " + accentCharNo + " " + pathOfSpeech + " " + Arrays.toString(grammemas);
+		return prefix + "-" + base + "-" + flexia + " " + accentCharNo + " " + pathOfSpeech + " " + /*Arrays.toString(*/grammemas/*)*/;
 	}
 
 	public String getPrefix() {
@@ -64,7 +65,10 @@ public class MorphologyAnalysis implements Serializable {
 		return pathOfSpeech;
 	}
 
-	public Grammema[] getGrammemas() {
+/*	public Grammema[] getGrammemas() {
+		return grammemas;
+	}*/
+	public long getGrammemas() {
 		return grammemas;
 	}
 
@@ -96,7 +100,10 @@ public class MorphologyAnalysis implements Serializable {
 		this.pathOfSpeech = pathOfSpeech;
 	}
 
-	public void setGrammemas(Grammema[] grammemas) {
+/*	public void setGrammemas(Grammema[] grammemas) {
+		this.grammemas = grammemas;
+	}*/
+	public void setGrammemas(long grammemas) {
 		this.grammemas = grammemas;
 	}
 
@@ -107,7 +114,7 @@ public class MorphologyAnalysis implements Serializable {
 		result = prime * result + accentCharNo;
 		result = prime * result + ((base == null) ? 0 : base.hashCode());
 		result = prime * result + ((flexia == null) ? 0 : flexia.hashCode());
-		result = prime * result + Arrays.hashCode(grammemas);
+//		result = prime * result + Arrays.hashCode(grammemas);
 		result = prime * result
 				+ ((pathOfSpeech == null) ? 0 : pathOfSpeech.hashCode());
 		result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
@@ -135,7 +142,8 @@ public class MorphologyAnalysis implements Serializable {
 				return false;
 		} else if (!flexia.equals(other.flexia))
 			return false;
-		if (!Arrays.equals(grammemas, other.grammemas))
+//		if (!Arrays.equals(grammemas, other.grammemas))
+		if (grammemas != other.grammemas)
 			return false;
 		if (pathOfSpeech == null) {
 			if (other.pathOfSpeech != null)

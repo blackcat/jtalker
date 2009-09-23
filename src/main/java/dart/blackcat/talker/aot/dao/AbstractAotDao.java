@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import dart.blackcat.talker.aot.AotException;
 import dart.blackcat.talker.morph.Grammema;
+import dart.blackcat.talker.morph.Grammemas;
 import dart.blackcat.talker.morph.MorphologyAnalysis;
 import dart.blackcat.talker.morph.PathOfSpeech;
 
@@ -67,111 +68,111 @@ public abstract class AbstractAotDao extends JdbcDaoSupport {
 	}
 
 	
-	protected Grammema string2Grammema(String s) throws DatabaseIntegrityViolationException {
+	protected long string2Grammema(String s) throws DatabaseIntegrityViolationException {
 		if (s.equals("вн")) {
-			return Grammema.accusative;
+			return Grammemas.accusative;
 		} else if (s.equals("аббр")) {
-			return Grammema.acronym;
+			return Grammemas.acronym;
 		} else if (s.equals("дст")) {
-			return Grammema.activeVoice;
+			return Grammemas.activeVoice;
 		} else if (s.equals("од")) {
-			return Grammema.animante;
+			return Grammemas.animante;
 		} else if (s.equals("арх")) {
-			return Grammema.archaism;
+			return Grammemas.archaism;
 		} else if (s.equals("кр")) {
-			return Grammema.brevity;
+			return Grammemas.brevity;
 		} else if (s.equals("сравн")) {
-			return Grammema.comparative;
+			return Grammemas.comparative;
 		} else if (s.equals("дт")) {
-			return Grammema.dative;
+			return Grammemas.dative;
 		} else if (s.equals("дфст")) {
-			return Grammema.dfst;
+			return Grammemas.dfst;
 		} else if (s.equals("жр")) {
-			return Grammema.f;
+			return Grammemas.f;
 		} else if (s.equals("1л")) {
-			return Grammema.firstPerson;
+			return Grammemas.firstPerson;
 		} else if (s.equals("буд")) {
-			return Grammema.future;
+			return Grammemas.future;
 		} else if (s.equals("рд")) {
-			return Grammema.genitive;
+			return Grammemas.genitive;
 		} else if (s.equals("пвл")) {
-			return Grammema.imperativeMood;
+			return Grammemas.imperativeMood;
 		} else if (s.equals("нс")) {
-			return Grammema.imperfectForm;
+			return Grammemas.imperfectForm;
 		} else if (s.equals("безл")) {
-			return Grammema.impersonal;
+			return Grammemas.impersonal;
 		} else if (s.equals("но")) {
-			return Grammema.inanimate;
+			return Grammemas.inanimate;
 		} else if (s.equals("разг")) {
-			return Grammema.informal;
+			return Grammemas.informal;
 		} else if (s.equals("указат")) {
-			return Grammema.indicating;
+			return Grammemas.indicating;
 		} else if (s.equals("тв")) {
-			return Grammema.instrumental;
+			return Grammemas.instrumental;
 		} else if (s.equals("вопр")) {
-			return Grammema.interrogative;
+			return Grammemas.interrogative;
 		} else if (s.equals("0")) {
-			return Grammema.invariable;
+			return Grammemas.invariable;
 		} else if (s.equals("лок")) {
-			return Grammema.locativity;
+			return Grammemas.locativity;
 		} else if (s.equals("мр")) {
-			return Grammema.m;
+			return Grammemas.m;
 		} else if (s.equals("мр-жр")) {
-			return Grammema.mf;
+			return Grammemas.mf;
 		} else if (s.equals("ср")) {
-			return Grammema.n;
+			return Grammemas.n;
 		} else if (s.equals("имя")) {
-			return Grammema.name;
+			return Grammemas.name;
 		} else if (s.equals("им")) {
-			return Grammema.nominative;
+			return Grammemas.nominative;
 		} else if (s.equals("нп")) {
-			return Grammema.nonTransitiveVerb;
+			return Grammemas.nonTransitiveVerb;
 		} else if (s.equals("орг")) {
-			return Grammema.organization;
+			return Grammemas.organization;
 		} else if (s.equals("стр")) {
-			return Grammema.passiveVoice;
+			return Grammemas.passiveVoice;
 		} else if (s.equals("прш")) {
-			return Grammema.past;
+			return Grammemas.past;
 		} else if (s.equals("отч")) {
-			return Grammema.patronymic;
+			return Grammemas.patronymic;
 		} else if (s.equals("св")) {
-			return Grammema.perfectForm;
+			return Grammemas.perfectForm;
 		} else if (s.equals("мн")) {
-			return Grammema.plural;
+			return Grammemas.plural;
 		} else if (s.equals("притяж")) {
-			return Grammema.possessive;
+			return Grammemas.possessive;
 		} else if (s.equals("пр")) {
-			return Grammema.prepositional;
+			return Grammemas.prepositional;
 		} else if (s.equals("нст")) {
-			return Grammema.present;
+			return Grammemas.present;
 		} else if (s.equals("проф")) {
-			return Grammema.professionalism;
+			return Grammemas.professionalism;
 		} else if (s.equals("кач")) {
-			return Grammema.quality;
+			return Grammemas.quality;
 		} else if (s.equals("относ")) {
-			return Grammema.relativity;
+			return Grammemas.relativity;
 		} else if (s.equals("2")) {
-			return Grammema.secondCase;
+			return Grammemas.secondCase;
 		} else if (s.equals("2л")) {
-			return Grammema.secondPerson;
+			return Grammemas.secondPerson;
 		} else if (s.equals("ед")) {
-			return Grammema.singular;
+			return Grammemas.singular;
 		} else if (s.equals("жарг")) {
-			return Grammema.slang;
+			return Grammemas.slang;
 		} else if (s.equals("прев")) {
-			return Grammema.superlative;
+			return Grammemas.superlative;
 		} else if (s.equals("фам")) {
-			return Grammema.surname;
+			return Grammemas.surname;
 		} else if (s.equals("3л")) {
-			return Grammema.thirdPerson;
+			return Grammemas.thirdPerson;
 		} else if (s.equals("пе")) {
-			return Grammema.transitiveVerb;
+			return Grammemas.transitiveVerb;
 		} else if (s.equals("опч")) {
-			return Grammema.typo;
+			return Grammemas.typo;
 		} else if (s.equals("зв")) {
-			return Grammema.vocative;
+			return Grammemas.vocative;
 		} else {
-			throw new DatabaseIntegrityViolationException("Unknown grammema: " + s);
+			throw new DatabaseIntegrityViolationException("Unknown Grammema: " + s);
 		}
 	}
 }
