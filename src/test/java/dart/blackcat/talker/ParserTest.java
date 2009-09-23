@@ -10,7 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
-import dart.blackcat.talker.syntax.Parser;
+import dart.blackcat.talker.syntax.TextParser;
 import dart.blackcat.talker.syntax.Sentence;
 
 public class ParserTest {
@@ -19,7 +19,7 @@ public class ParserTest {
 	@Test
 	public void testGetSentence() throws IOException {
 		URL url = ParserTest.class.getResource("/0.25test.txt");
-		Parser parser = new Parser(
+		TextParser parser = new TextParser(
 				new FileInputStream(
 						url.getPath()
 				)
