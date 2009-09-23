@@ -8,6 +8,7 @@ import java.util.Set;
 import dart.blackcat.talker.JTalkerException;
 import dart.blackcat.talker.domain.Sentence;
 import dart.blackcat.talker.domain.Word;
+import dart.blackcat.talker.morph.Grammemas;
 import dart.blackcat.talker.morph.MorphologyAnalysis;
 import dart.blackcat.talker.morph.MorphologyAnalyzer;
 import dart.blackcat.talker.syntax.SyntacticAnalysis;
@@ -43,11 +44,7 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 	}
 	
 	public boolean canBeSubject(Word word) {
-		for (Iterator<MorphologyAnalysis> i = word.getMorphologyAnalysisSet().iterator(); i.hasNext();) {
-			MorphologyAnalysis morphologyAnalysis = i.next();
-			
-		}
-		return false;
+		return word.hasGrammema(Grammemas.nominative);
 	}
 
 	

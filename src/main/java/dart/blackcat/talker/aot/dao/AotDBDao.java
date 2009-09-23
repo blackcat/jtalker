@@ -107,18 +107,18 @@ public class AotDBDao extends AbstractAotDao {
 				StringTokenizer st0 = new StringTokenizer(grammemas0String == null ? "" : grammemas0String, ",");
 //				Grammema[] grammemas = new Grammema[st.countTokens() + st0.countTokens()];
 				long grammemas = 0;
-				int i = 0;
+//				int i = 0;
 
 				try {
 					while (st.hasMoreTokens()) {
 //						grammemas[i] = string2Grammema(st.nextToken());
 						grammemas |= string2Grammema(st.nextToken());
-						i++;
+//						i++;
 					}
 					while (st0.hasMoreTokens()) {
 //						grammemas[i] = string2Grammema(st0.nextToken());
 						grammemas |= string2Grammema(st0.nextToken());
-						i++;
+//						i++;
 					}
 				
 					result.add(new MorphologyAnalysis("", base, flexia, accentCharNo, string2PathOfSpeech(pathOfSpeech0), grammemas));

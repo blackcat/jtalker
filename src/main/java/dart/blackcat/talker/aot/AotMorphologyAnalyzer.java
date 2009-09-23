@@ -84,8 +84,10 @@ public class AotMorphologyAnalyzer implements MorphologyAnalyzer {
 		Set<MorphologyAnalysis> result = new HashSet<MorphologyAnalysis>();
 		int length = word.length();
 
-		while (result.isEmpty() && length >= 0) {
-			result = aotDao.findWord(word.substring(0, length), word.substring(length));
+		while (/*result.isEmpty() && */length >= 0) {
+			result.addAll(
+					aotDao.findWord(word.substring(0, length), word.substring(length))
+			);
 			length--;
 		}
 		
