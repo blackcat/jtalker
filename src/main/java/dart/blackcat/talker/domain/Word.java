@@ -1,6 +1,7 @@
 package dart.blackcat.talker.domain;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import dart.blackcat.talker.morph.MorphologyAnalysis;
 
@@ -10,7 +11,7 @@ public class Word implements Serializable {
 
 	
 	private String callback;
-	private MorphologyAnalysis morphologyAnalysis;
+	private Set<MorphologyAnalysis> morphologyAnalysisSet;
 	
 	public Word(String word) {
 		callback = word;
@@ -19,12 +20,13 @@ public class Word implements Serializable {
 	public String getWord() {
 		return callback;
 	}
-	
-	public MorphologyAnalysis getMorphologyAnalysis() {
-		return morphologyAnalysis;
+
+	public Set<MorphologyAnalysis> getMorphologyAnalysisSet() {
+		return morphologyAnalysisSet;
 	}
-	
-	public void setMorphologyAnalysis(MorphologyAnalysis morphologyAnalysis) {
-		this.morphologyAnalysis = morphologyAnalysis;
+
+	public void setMorphologyAnalysisSet(
+			Set<MorphologyAnalysis> morphologyAnalysisSet) {
+		this.morphologyAnalysisSet = morphologyAnalysisSet;
 	}
 }
