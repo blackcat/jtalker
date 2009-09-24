@@ -1,9 +1,9 @@
 package dart.blackcat.talker.aot;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -49,8 +49,6 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 	@Override
 	public Set<SyntacticAnalysis> analyze(Sentence sentence) throws JTalkerException {
 		
-		Word subject;
-		Word predicate;
 		Set<SyntacticAnalysis> result = new HashSet<SyntacticAnalysis>();
 		
 		// morphology analysis
@@ -60,33 +58,16 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 			);
 		}
 		
-		Set<Word> potentialSubjectSet = new HashSet<Word>();
-		for (Iterator<Word> i = sentence.iterator(); i.hasNext();) {
-			Word word = i.next();
-			if (canBeSubject(word)) {
-				potentialSubjectSet.add(word);
+		List<Word> subjectList = analyzeForSubjects(sentence);
+		for (Iterator<Word> i = subjectList.iterator(); i.hasNext();) {
+			Word potentialSubject = i.next();
+			Collection<Word> predicateCollection = findPredicate(sentence, potentialSubject);
+			
+			for (Iterator<Word> i0 = predicateCollection.iterator(); i0.hasNext();) {
+				Word potentialPredicate = i0.next();
+				result.add(new SyntacticAnalysis(potentialSubject, potentialPredicate, sentence));
 			}
 		}
-		if (potentialSubjectSet.size() == 1) {
-			subject = potentialSubjectSet.iterator().next();
-			
-			// у подлежащего и сказуемого должны совпадать лицо и род
-			long grammemaFilter = Grammemas.singular | Grammemas.plural | Grammemas.firstPerson | Grammemas.secondPerson | Grammemas.thirdPerson;
-			
-			for (Word word : sentence) {
-				if (
-						word.hasPathOfSpeech(PathOfSpeech.verb, true) &&
-						word.hasGrammema(
-								subject.getBestMorphologyAnalysis().getGrammemas() & grammemaFilter,
-								false
-						)
-				) {
-					predicate = word;
-					result.add(new SyntacticAnalysis(subject, predicate, sentence));
-				}
-			}
-		}
-		
 		
 		return result;
 	}
@@ -119,7 +100,7 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 	 * @return {@link List} of {@link Word}s. First is the most probable subject.
 	 */
 	protected List<Word> analyzeForSubjects(Sentence sentence) {
-		LinkedList<Word> result = new LinkedList<Word>();
+		ArrayList<Word> result = new ArrayList<Word>(5);
 		
 		for (Iterator<Word> i = sentence.iterator(); i.hasNext();) {
 			Word word = i.next();
@@ -144,13 +125,16 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 		return result;
 	}
 	
-	protected Set<Word> findPredicate(Sentence sentence, Word subject) {
+	protected Collection<Word> findPredicate(Sentence sentence, Word subject) {
+		Collection<Word> result = new HashSet<Word>();
+		
 		for (Word word : sentence) {
 			
 			for (Iterator<MorphologyAnalysis> i = word.getMorphologyAnalysisSet().iterator(); i.hasNext();) {
 				MorphologyAnalysis analysis = i.next();
 				
 				if (
+						analysis.hasPathOfSpeech(PathOfSpeech.verb) &&
 						analysis.hasGrammema(
 							subject.getBestMorphologyAnalysis().getGrammemas() &
 							(
@@ -162,9 +146,12 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 							)
 						)
 				) {
-					
+					result.add(word);
 				}
+			}
 		}
+		
+		return result;
 	}
 
 	@Required

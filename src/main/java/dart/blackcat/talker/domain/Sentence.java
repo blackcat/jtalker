@@ -1,6 +1,7 @@
 package dart.blackcat.talker.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Sentence  implements Serializable, Iterable<Word> {
 	
 	private String s;
 	private char[] eosChars;
-	private List<Word> words;
+	private List<Word> words = new ArrayList<Word>();
 	
 	private boolean isInterrogative = false;		// вопросительное предложение
 	private boolean isExclamatory = false;			// восклицательное предложение
