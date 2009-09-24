@@ -5,7 +5,6 @@ import java.util.Set;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import dart.blackcat.talker.aot.AotException;
-import dart.blackcat.talker.morph.Grammema;
 import dart.blackcat.talker.morph.Grammemas;
 import dart.blackcat.talker.morph.MorphologyAnalysis;
 import dart.blackcat.talker.morph.PathOfSpeech;
@@ -19,7 +18,7 @@ public abstract class AbstractAotDao extends JdbcDaoSupport {
 	
 	public abstract Set<MorphologyAnalysis> findWordByFlexia(String lemma, final String flexia) throws AotException;
 	
-	protected PathOfSpeech string2PathOfSpeech(String s) throws DatabaseIntegrityViolationException {
+	protected int string2PathOfSpeech(String s) throws DatabaseIntegrityViolationException {
 		if (s.equals("П")) {
 			return PathOfSpeech.adjective;
 		} else if (s.equals("Н")) {

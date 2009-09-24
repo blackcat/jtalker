@@ -60,6 +60,7 @@
  	
  	<!-- Syntax -->
  		<bean id="aotSyntacticAnalyzer"			class="dart.blackcat.talker.aot.AotSyntacticAnalyzer">
+ 			<property name="morphologyAnalyzer" ref="morphologyAnalyzerQueue"/>
  		</bean>
  		
  		<bean id="syntacticAnalyzerQueue"	class="dart.blackcat.talker.syntax.SyntacticAnalyzerQueue">

@@ -62,6 +62,10 @@ public class TextParser {
 			previousCharIsASentenceDelim = currentCharIsASentenceDelim;
 		}
 		
-		return null;
+		if (currentCharIsASentenceDelim) {
+			return new Sentence(sentenceString.toString(), eosString.toString());
+		} else {
+			return null;
+		}
 	}
 }

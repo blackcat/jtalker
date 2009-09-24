@@ -3,20 +3,22 @@ package dart.blackcat.talker.domain;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * Basic sentence implementation
+ * Basic sentence implementation.
  * @author pvyazankin
  *
  */
-public class Sentence  implements Serializable, Iterable<String> {
+public class Sentence  implements Serializable, Iterable<Word> {
 
 	private static final long serialVersionUID = 8073040487942891802L;
 	
 	
 	private String s;
 	private char[] eosChars;
+	private List<Word> words;
 	
 	private boolean isInterrogative = false;		// вопросительное предложение
 	private boolean isExclamatory = false;			// восклицательное предложение
@@ -34,6 +36,11 @@ public class Sentence  implements Serializable, Iterable<String> {
 			if (eosChars[i] == '!') {
 				isExclamatory = true;
 			}
+		}
+		
+		StringTokenizer tokenizer = new StringTokenizer(s, " 	,.—:;\"\'\\/!?()[]{}@#№$%^&*_+=0123456789", false);
+		while (tokenizer.hasMoreTokens()) {
+			words.add(new Word(tokenizer.nextToken()));
 		}
 	}
 	
@@ -62,31 +69,10 @@ public class Sentence  implements Serializable, Iterable<String> {
 	 * @return iterator
 	 */
 	@Override
-	public Iterator<String> iterator() {
-		return new WordIterator();
+	public Iterator<Word> iterator() {
+		return words.iterator();
 	}
 	
-	
-	private class WordIterator implements Iterator<String> {
-		
-		private StringTokenizer tokenizer = new StringTokenizer(s, " 	,.—:;\"\'\\/!?()[]{}@#№$%^&*_+=0123456789", false);
-		
-		@Override
-		public boolean hasNext() {
-			return tokenizer.hasMoreTokens();
-		}
-
-		@Override
-		public String next() {
-			return tokenizer.nextToken();
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException("Из песни слова не выкинешь!");
-		}
-		
-	}
 	
 	@Override
 	public String toString() {
