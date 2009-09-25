@@ -118,6 +118,14 @@ public enum PathOfSpeech {
 		this.name = name;
 	}
 	
+	public int getCode() {
+		return code;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
 	@Override
 	public String toString() {
 		return name;

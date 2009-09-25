@@ -102,20 +102,29 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 		for (Iterator<Word> i = sentence.iterator(); i.hasNext();) {
 			Word word = i.next();
 			
-			if (word.hasPathOfSpeech(true, PathOfSpeech.noun) && word.hasGrammema(true, Grammema.nominative)) {
-				result.add(0, word);
-			}
-			if (word.hasPathOfSpeech(true, PathOfSpeech.pronoun)) {
-				result.add(1, word);
-			}
-			if (word.hasPathOfSpeech(true, PathOfSpeech.numeral, PathOfSpeech.ordinal)) {
-				result.add(2, word);
-			}
-			if (word.hasPathOfSpeech(true, PathOfSpeech.infinitive)) {
-				result.add(3, word);
-			}
-			if (word.hasGrammema(true, Grammema.name, Grammema.surname, Grammema.patronymic)) {
-				result.add(4, word);
+			for (Iterator<MorphologyAnalysis> i0 = word.getMorphologyAnalysisSet().iterator(); i0.hasNext();) {
+				MorphologyAnalysis analysis = i0.next();
+			
+				if (analysis.hasPathOfSpeech(PathOfSpeech.noun) && analysis.hasGrammema(Grammema.nominative)) {
+					word.addBall(analysis);
+					result.add(0, word);
+				}
+				if (analysis.hasPathOfSpeech(PathOfSpeech.pronoun)) {
+					word.addBall(analysis);
+					result.add(1, word);
+				}
+				if (analysis.hasPathOfSpeech(PathOfSpeech.numeral, PathOfSpeech.ordinal)) {
+					word.addBall(analysis);
+					result.add(2, word);
+				}
+				if (analysis.hasPathOfSpeech(PathOfSpeech.infinitive)) {
+					word.addBall(analysis);
+					result.add(3, word);
+				}
+				if (analysis.hasGrammema(Grammema.name, Grammema.surname, Grammema.patronymic)) {
+					word.addBall(analysis);
+					result.add(4, word);
+				}
 			}
 		}
 		
@@ -148,6 +157,7 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 								Grammema.thirdPerson
 						)
 				) {
+					word.addBall(analysis);
 					result.add(word);
 				}
 			}

@@ -48,7 +48,7 @@ public class MorphologyAnalysis implements Serializable {
 	@Override
 	public String toString() {
 //		return prefix + "-" + base + "-" + flexia + " " + accentCharNo + " " + pathOfSpeech + " " + /*Arrays.toString(*/grammemas/*)*/;
-		return prefix + "-" + base + "-" + flexia + " " + accentCharNo + " " + pathOfSpeech + " " + Grammema.resolveCumulativeGrammemaName(grammemas);
+		return prefix + "-" + base + "-" + flexia + " " + accentCharNo + " " + pathOfSpeech.getName() + ", " + Grammema.resolveCumulativeGrammemaName(grammemas);
 	}
 
 	public String getPrefix() {

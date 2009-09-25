@@ -30,6 +30,13 @@ public class Word implements Serializable {
 	public Set<MorphologyAnalysis> getMorphologyAnalysisSet() {
 		return morphologyAnalysisMap.keySet();
 	}
+	
+	public void addBall(MorphologyAnalysis morphologyAnalysis) {
+		if (morphologyAnalysisMap.containsKey(morphologyAnalysis)) {
+			Integer balls = morphologyAnalysisMap.get(morphologyAnalysis);
+			morphologyAnalysisMap.put(morphologyAnalysis, ++balls);
+		}
+	}
 
 	public void setMorphologyAnalysisSet(Set<MorphologyAnalysis> morphologyAnalysisSet) {
 		for (Iterator<MorphologyAnalysis> i = morphologyAnalysisSet.iterator(); i.hasNext();) {
@@ -43,15 +50,12 @@ public class Word implements Serializable {
 	 * @param critical if critical, then found analysis will have more balls.
 	 * @return
 	 */
-	public boolean hasGrammema(boolean critical, Grammema... grammema) {
+	public boolean hasGrammema(Grammema... grammema) {
 		boolean result = false;
 		for (Iterator<Entry<MorphologyAnalysis, Integer>> i = morphologyAnalysisMap.entrySet().iterator(); i.hasNext();) {
 			Entry<MorphologyAnalysis, Integer> entry = i.next();
 
 			if (entry.getKey().hasGrammema(grammema)) {
-				if (critical) {
-					entry.setValue(entry.getValue() + 1);	
-				}
 				result = true;
 			}
 		}
@@ -64,15 +68,12 @@ public class Word implements Serializable {
 	 * @param critical if critical, then found analysis will have more balls.
 	 * @return
 	 */
-	public boolean hasPathOfSpeech(boolean critical, PathOfSpeech... pathOfSpeech) {
+	public boolean hasPathOfSpeech(PathOfSpeech... pathOfSpeech) {
 		boolean result = false;
 		for (Iterator<Entry<MorphologyAnalysis, Integer>> i = morphologyAnalysisMap.entrySet().iterator(); i.hasNext();) {
 			Entry<MorphologyAnalysis, Integer> entry = i.next();
 
 			if (entry.getKey().hasPathOfSpeech(pathOfSpeech)) {
-				if (critical) {
-					entry.setValue(entry.getValue() + 1);	
-				}
 				result = true;
 			}
 		}
