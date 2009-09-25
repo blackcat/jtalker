@@ -8,6 +8,7 @@ import dart.blackcat.talker.morph.MorphologyAnalyzer;
 
 public class TextAnalyzer {
 	
+	@SuppressWarnings("unused")
 	private MorphologyAnalyzer morphologyAnalyzer;
 
 	public void analyze(InputStreamReader reader) {

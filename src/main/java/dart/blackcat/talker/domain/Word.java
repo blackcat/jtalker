@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import dart.blackcat.talker.morph.Grammema;
 import dart.blackcat.talker.morph.MorphologyAnalysis;
+import dart.blackcat.talker.morph.PathOfSpeech;
 
 public class Word implements Serializable {
 
@@ -58,12 +59,12 @@ public class Word implements Serializable {
 	}
 	
 	/**
-	 * Check if one of morphology analyses has required path of speech. 
+	 * Check if one of morphology analysis has required path of speech. 
 	 * @param pathOfSpeech
 	 * @param critical if critical, then found analysis will have more balls.
 	 * @return
 	 */
-	public boolean hasPathOfSpeech(int pathOfSpeech, boolean critical) {
+	public boolean hasPathOfSpeech(boolean critical, PathOfSpeech... pathOfSpeech) {
 		boolean result = false;
 		for (Iterator<Entry<MorphologyAnalysis, Integer>> i = morphologyAnalysisMap.entrySet().iterator(); i.hasNext();) {
 			Entry<MorphologyAnalysis, Integer> entry = i.next();

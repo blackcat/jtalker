@@ -1,110 +1,151 @@
 package dart.blackcat.talker.morph;
 
-public interface PathOfSpeech {
-	
+
+public enum PathOfSpeech {
+
 	/**
 	 * существительное
 	 */
-	public final static int noun = 0x1;
-	
+	noun(0x1, "существительное"),
+
 	/**
 	 * прилагательное
 	 */
-	public final static int adjective = 0x2; 
-	
+	adjective(0x2, "прилагательное"), 
+
 	/**
 	 * краткое прилагательное
 	 */
-	public final static int shortAdjective = 0x4;
-	
+	shortAdjective(0x4, "краткое прилагательное"),
+
 	/**
 	 * глагол
 	 */
-	public final static int verb = 0x8; 
-	
+	verb(0x8, "глагол"), 
+
 	/**
-	 * инфинитив (глагола)
+	 * инфинитив (глагола),
 	 */
-	public final static int infinitive = 0x10;
-	
+	infinitive(0x10, "инфинитив (глагола)"),
+
 	/**
 	 * причастие
 	 */
-	public final static int participle = 0x20; 
-	
+	participle(0x20, "причастие"), 
+
 	/**
 	 * краткое причастие
 	 */
-	public final static int shortParticiple = 0x40;
-	
-	
+	shortParticiple(0x40, "краткое причастие"),
+
 	/**
 	 * деепричастие
 	 */
-	public final static int gerund = 0x60;
-	
+	gerund(0x80, "деепричастие"),
+
 	/**
 	 * местоимение
 	 */
-	public final static int pronoun = 0x80; 
-	
+	pronoun(0x100, "местоимение"), 
+
 	/**
 	 * местоимение-предикатив
 	 */
-	public final static int pronounPredicative = 0x100; 
-	
+	pronounPredicative(0x200, "местоимение-предикатив"), 
+
 	/**
 	 * местоимение прилагательное
 	 */
-	public final static int pronounAdjective = 0x200;
-	
+	pronounAdjective(0x400, "местоимение прилагательное"),
+
 	/**
-	 * числительное (количественное)
+	 * числительное (количественное),
 	 */
-	public final static int numeral = 0x400; 
-	
+	numeral(0x800, "числительное (количественное)"), 
+
 	/**
 	 * порядковое числительное
 	 */
-	public final static int ordinal = 0x800;
-	
+	ordinal(0x1000, "порядковое числительное"),
+
 	/**
 	 * наречие
 	 */
-	public final static int adverb = 0x1000;
-	
+	adverb(0x2000, "наречие"),
+
 	/**
 	 * предикатив
 	 */
-	public final static int predicateNoun = 0x2000;
-	
+	predicateNoun(0x4000, "предикатив"),
+
 	/**
 	 * предлог
 	 */
-	public final static int preposition = 0x4000;
-	
+	preposition(0x8000, "предлог"),
+
 	/**
 	 * союз
 	 */
-	public final static int conjunction = 0x8000;
-	
+	conjunction(0x10000, "союз"),
+
 	/**
 	 * междометие
 	 */
-	public final static int interjection = 0x10000;
-	
+	interjection(0x20000, "междометие"),
+
 	/**
 	 * частица
 	 */
-	public final static int particle = 0x20000;
-	
+	particle(0x40000, "частица"),
+
 	/**
 	 * вводное слово
 	 */
-	public final static int introduction = 0x40000;
-	
+	introduction(0x80000, "вводное слово"),
+
 	/**
 	 * фразеологизм, фразеология
 	 */
-	public final static int phraseology = 0x80000;
+	phraseology(0x100000, "фразеологизм"),
+	
+	;
+	
+	private int code;
+	private String name;
+	
+	private PathOfSpeech(int code, String name) {
+		this.code = code;
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+	
+	public static String resolveCumulativePathOfSpeechName(int code) {
+		StringBuffer result = new StringBuffer();
+		
+		for (PathOfSpeech pathOfSpeech : PathOfSpeech.values()) {
+			if ( (pathOfSpeech.code & code) == pathOfSpeech.code) {
+				result.append(pathOfSpeech.name).append(" ");
+			}
+		}
+		
+		return result.toString();
+	}
+	
+	public static int getCumulativePathOfSpeechCode(PathOfSpeech... pathsOfSpeech) {
+		int result = 0;
+		for (int i = 0; i < pathsOfSpeech.length; i++) {
+			result |= pathsOfSpeech[i].code;
+		}
+		return result;
+	}
+	
+	public static boolean equals(long pathOfSpeechCode0, long pathOfSpeechCode1, PathOfSpeech... commonPathsOfSpeech) {
+		long filter = PathOfSpeech.getCumulativePathOfSpeechCode(commonPathsOfSpeech);
+		return (pathOfSpeechCode0 & filter) == (pathOfSpeechCode1 & filter);
+	}
+	
 }

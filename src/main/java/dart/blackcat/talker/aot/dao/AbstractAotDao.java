@@ -18,7 +18,7 @@ public abstract class AbstractAotDao extends JdbcDaoSupport {
 	
 	public abstract Set<MorphologyAnalysis> findWordByFlexia(String lemma, final String flexia) throws AotException;
 	
-	protected int string2PathOfSpeech(String s) throws DatabaseIntegrityViolationException {
+	protected PathOfSpeech string2PathOfSpeech(String s) throws DatabaseIntegrityViolationException {
 		if (s.equals("П")) {
 			return PathOfSpeech.adjective;
 		} else if (s.equals("Н")) {

@@ -13,7 +13,7 @@ public class MorphologyAnalysis implements Serializable {
 	private String flexia;
 	private byte accentCharNo;
 //	private PathOfSpeech1 pathOfSpeech;
-	private int pathOfSpeech;
+	private PathOfSpeech pathOfSpeech;
 //	private Grammema[] grammemas;
 	private long grammemas;
 	
@@ -22,7 +22,7 @@ public class MorphologyAnalysis implements Serializable {
 			String base,
 			String flexia,
 			byte accentCharNo,
-			int pathOfSpeech,
+			PathOfSpeech pathOfSpeech,
 //			Grammema[] grammemas
 			long grammemas
 			) {
@@ -63,7 +63,7 @@ public class MorphologyAnalysis implements Serializable {
 		return flexia;
 	}
 
-	public int getPathOfSpeech() {
+	public PathOfSpeech getPathOfSpeech() {
 		return pathOfSpeech;
 	}
 
@@ -98,7 +98,7 @@ public class MorphologyAnalysis implements Serializable {
 		this.flexia = flexia;
 	}
 
-	public void setPathOfSpeech(int pathOfSpeech) {
+	public void setPathOfSpeech(PathOfSpeech pathOfSpeech) {
 		this.pathOfSpeech = pathOfSpeech;
 	}
 
@@ -134,12 +134,17 @@ public class MorphologyAnalysis implements Serializable {
 	}
 	
 	/**
-	 * Check if analysis haas required path of speech.
+	 * Check if analyses has required path of speech.
 	 * @param pathOfSpeech
 	 * @return
 	 */
-	public boolean hasPathOfSpeech(long pathOfSpeech) {
-		return (this.pathOfSpeech & pathOfSpeech) == pathOfSpeech;
+	public boolean hasPathOfSpeech(PathOfSpeech... pathOfSpeech) {
+		for (int i = 0; i < pathOfSpeech.length; i++) {
+			if (this.pathOfSpeech.equals(pathOfSpeech[i])) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -150,7 +155,8 @@ public class MorphologyAnalysis implements Serializable {
 		result = prime * result + ((base == null) ? 0 : base.hashCode());
 		result = prime * result + ((flexia == null) ? 0 : flexia.hashCode());
 		result = prime * result + (int) (grammemas ^ (grammemas >>> 32));
-		result = prime * result + pathOfSpeech;
+		result = prime * result
+				+ ((pathOfSpeech == null) ? 0 : pathOfSpeech.hashCode());
 		result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
 		return result;
 	}
@@ -178,7 +184,10 @@ public class MorphologyAnalysis implements Serializable {
 			return false;
 		if (grammemas != other.grammemas)
 			return false;
-		if (pathOfSpeech != other.pathOfSpeech)
+		if (pathOfSpeech == null) {
+			if (other.pathOfSpeech != null)
+				return false;
+		} else if (!pathOfSpeech.equals(other.pathOfSpeech))
 			return false;
 		if (prefix == null) {
 			if (other.prefix != null)
@@ -187,5 +196,6 @@ public class MorphologyAnalysis implements Serializable {
 			return false;
 		return true;
 	}
+
 
 }

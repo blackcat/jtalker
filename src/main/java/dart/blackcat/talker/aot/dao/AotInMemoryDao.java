@@ -23,6 +23,7 @@ public class AotInMemoryDao extends AbstractAotDao {
 	private Map<String, LemmataObj> lemmata = new HashMap<String, LemmataObj>();
 	private Map<Integer, FlexiaObj> flexia = new HashMap<Integer, FlexiaObj>();
 	private Map<String, Object> ancode = new HashMap<String, Object>();
+	@SuppressWarnings("unused")
 	private Map<Integer, Object> accent = new HashMap<Integer, Object>();
 	
 	private static final Log log = LogFactory.getLog(MorphologyAnalyzerPerformanceTest.class);

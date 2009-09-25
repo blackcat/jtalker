@@ -72,13 +72,6 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 		return result;
 	}
 	
-	public boolean canBeSubject(Word word) {
-		return 
-			word.hasGrammema(true, Grammema.nominative) && (
-					word.hasPathOfSpeech(PathOfSpeech.noun, true) || word.hasPathOfSpeech(PathOfSpeech.pronoun, true)
-			);
-	}
-	
 	/**
 	 * find potential subjects and save them into subjectProbabilisticList
 	 * <br><br>
@@ -109,16 +102,16 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 		for (Iterator<Word> i = sentence.iterator(); i.hasNext();) {
 			Word word = i.next();
 			
-			if (word.hasPathOfSpeech(PathOfSpeech.noun, true) && word.hasGrammema(true, Grammema.nominative)) {
+			if (word.hasPathOfSpeech(true, PathOfSpeech.noun) && word.hasGrammema(true, Grammema.nominative)) {
 				result.add(0, word);
 			}
-			if (word.hasPathOfSpeech(PathOfSpeech.pronoun, true)) {
+			if (word.hasPathOfSpeech(true, PathOfSpeech.pronoun)) {
 				result.add(1, word);
 			}
-			if (word.hasPathOfSpeech(PathOfSpeech.numeral | PathOfSpeech.ordinal, true)) {
+			if (word.hasPathOfSpeech(true, PathOfSpeech.numeral, PathOfSpeech.ordinal)) {
 				result.add(2, word);
 			}
-			if (word.hasPathOfSpeech(PathOfSpeech.infinitive, true)) {
+			if (word.hasPathOfSpeech(true, PathOfSpeech.infinitive)) {
 				result.add(3, word);
 			}
 			if (word.hasGrammema(true, Grammema.name, Grammema.surname, Grammema.patronymic)) {

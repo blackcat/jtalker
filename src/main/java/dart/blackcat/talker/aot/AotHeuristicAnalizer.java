@@ -12,8 +12,10 @@ import dart.blackcat.talker.morph.MorphologyAnalyzer;
 
 public class AotHeuristicAnalizer implements MorphologyAnalyzer {
 	
+	@SuppressWarnings("unused")
 	private AotMorphologyAnalyzer morphologyAnalyzer;
 	private AbstractAotDao aotDao;
+	@SuppressWarnings("unused")
 	private int limit = 5;
 
 	@Override
