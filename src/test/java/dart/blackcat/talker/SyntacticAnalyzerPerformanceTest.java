@@ -66,6 +66,7 @@ public class SyntacticAnalyzerPerformanceTest {
 		log.info("time elapsled: " + time);
 		log.info("sentences processed: " + sentenceCount);
 		log.info("succ / unsucc %: " + good * 100.000 / badSentences.size());
+		log.info("unsucc %:" + badSentences.size() * 100.000 / sentenceCount);
 		log.info("ms / sentence: " + time / sentenceCount);
 		log.info("sentence / s: " + sentenceCount * 1000.000 / time);
 	}
