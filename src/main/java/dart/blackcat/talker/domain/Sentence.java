@@ -77,7 +77,8 @@ public class Sentence  implements Serializable, Iterable<Word> {
 	
 	@Override
 	public String toString() {
-		StringBuffer sb = s.length() > 15 ? new StringBuffer(s.substring(0, 15)).append("... ") : new StringBuffer(s);
+		final int MAX_LEN = 30;
+		StringBuffer sb = s.length() > MAX_LEN ? new StringBuffer(s.substring(0, MAX_LEN)).append("... ") : new StringBuffer(s);
 		for (int i = 0; i < eosChars.length; i++) {
 			sb.append(eosChars[i]);
 		}

@@ -47,7 +47,8 @@ public class MorphologyAnalysis implements Serializable {
 	
 	@Override
 	public String toString() {
-		return prefix + "-" + base + "-" + flexia + " " + accentCharNo + " " + pathOfSpeech + " " + /*Arrays.toString(*/grammemas/*)*/;
+//		return prefix + "-" + base + "-" + flexia + " " + accentCharNo + " " + pathOfSpeech + " " + /*Arrays.toString(*/grammemas/*)*/;
+		return prefix + "-" + base + "-" + flexia + " " + accentCharNo + " " + pathOfSpeech + " " + Grammema.resolveCumulativeGrammemaName(grammemas);
 	}
 
 	public String getPrefix() {
@@ -113,8 +114,23 @@ public class MorphologyAnalysis implements Serializable {
 	 * @param grammema
 	 * @return
 	 */
-	public boolean hasGrammema(long grammema) {
-		return (grammemas & grammema) == grammema;
+	public boolean hasGrammema(Grammema... grammema) {
+		long code = Grammema.getCumulativeGrammemaCode(grammema);
+//		return (Grammema.getCumulativeGrammemaCode(grammemas) & code) == code;
+		return (grammemas & code) == code;
+	}
+	
+	public boolean hasGrammema(Grammema[] grammemas, Grammema... moreGrammemas) {
+		Grammema[] newArr = new Grammema[grammemas.length + moreGrammemas.length];
+		System.arraycopy(grammemas, 0, newArr, 0, grammemas.length);
+		System.arraycopy(moreGrammemas, 0, newArr, grammemas.length, moreGrammemas.length);
+		return hasGrammema(newArr);
+	}
+	
+	public boolean hasGrammema(long code, Grammema... grammemas) {
+		long code1 = Grammema.getCumulativeGrammemaCode(grammemas);
+//		return (Grammema.getCumulativeGrammemaCode(grammemas) & code) == code;
+		return (this.grammemas & code1) == code1;
 	}
 	
 	/**
@@ -171,5 +187,5 @@ public class MorphologyAnalysis implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }

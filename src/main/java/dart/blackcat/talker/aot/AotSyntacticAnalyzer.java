@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Required;
 import dart.blackcat.talker.JTalkerException;
 import dart.blackcat.talker.domain.Sentence;
 import dart.blackcat.talker.domain.Word;
-import dart.blackcat.talker.morph.Grammemas;
+import dart.blackcat.talker.morph.Grammema;
 import dart.blackcat.talker.morph.MorphologyAnalysis;
 import dart.blackcat.talker.morph.MorphologyAnalyzer;
 import dart.blackcat.talker.morph.PathOfSpeech;
@@ -74,7 +74,7 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 	
 	public boolean canBeSubject(Word word) {
 		return 
-			word.hasGrammema(Grammemas.nominative, true) && (
+			word.hasGrammema(true, Grammema.nominative) && (
 					word.hasPathOfSpeech(PathOfSpeech.noun, true) || word.hasPathOfSpeech(PathOfSpeech.pronoun, true)
 			);
 	}
@@ -102,10 +102,14 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 	protected List<Word> analyzeForSubjects(Sentence sentence) {
 		ArrayList<Word> result = new ArrayList<Word>(5);
 		
+		for (int i = 0; i < 5; i++) {
+			result.add(null);
+		}
+		
 		for (Iterator<Word> i = sentence.iterator(); i.hasNext();) {
 			Word word = i.next();
 			
-			if (word.hasPathOfSpeech(PathOfSpeech.noun, true) && word.hasGrammema(Grammemas.nominative, true)) {
+			if (word.hasPathOfSpeech(PathOfSpeech.noun, true) && word.hasGrammema(true, Grammema.nominative)) {
 				result.add(0, word);
 			}
 			if (word.hasPathOfSpeech(PathOfSpeech.pronoun, true)) {
@@ -117,8 +121,14 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 			if (word.hasPathOfSpeech(PathOfSpeech.infinitive, true)) {
 				result.add(3, word);
 			}
-			if (word.hasGrammema(Grammemas.name | Grammemas.surname | Grammemas.patronymic, true)) {
+			if (word.hasGrammema(true, Grammema.name, Grammema.surname, Grammema.patronymic)) {
 				result.add(4, word);
+			}
+		}
+		
+		for (Iterator<Word> i = result.iterator(); i.hasNext();) {
+			if (i.next() == null) {
+				i.remove();
 			}
 		}
 		
@@ -135,15 +145,14 @@ public class AotSyntacticAnalyzer implements SyntacticAnalyzer {
 				
 				if (
 						analysis.hasPathOfSpeech(PathOfSpeech.verb) &&
-						analysis.hasGrammema(
-							subject.getBestMorphologyAnalysis().getGrammemas() &
-							(
-								Grammemas.singular | 
-								Grammemas.plural | 
-								Grammemas.firstPerson | 
-								Grammemas.secondPerson | 
-								Grammemas.thirdPerson
-							)
+						Grammema.equals(
+								subject.getBestMorphologyAnalysis().getGrammemas(), 
+								analysis.getGrammemas(), 
+								Grammema.singular,
+								Grammema.plural,
+								Grammema.firstPerson, 
+								Grammema.secondPerson, 
+								Grammema.thirdPerson
 						)
 				) {
 					result.add(word);

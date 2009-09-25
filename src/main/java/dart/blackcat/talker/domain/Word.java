@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import dart.blackcat.talker.morph.Grammema;
 import dart.blackcat.talker.morph.MorphologyAnalysis;
 
 public class Word implements Serializable {
@@ -41,7 +42,7 @@ public class Word implements Serializable {
 	 * @param critical if critical, then found analysis will have more balls.
 	 * @return
 	 */
-	public boolean hasGrammema(long grammema, boolean critical) {
+	public boolean hasGrammema(boolean critical, Grammema... grammema) {
 		boolean result = false;
 		for (Iterator<Entry<MorphologyAnalysis, Integer>> i = morphologyAnalysisMap.entrySet().iterator(); i.hasNext();) {
 			Entry<MorphologyAnalysis, Integer> entry = i.next();

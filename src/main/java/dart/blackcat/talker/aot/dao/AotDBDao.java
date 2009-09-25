@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import dart.blackcat.talker.aot.AotException;
+import dart.blackcat.talker.morph.Grammema;
 import dart.blackcat.talker.morph.MorphologyAnalysis;
 import dart.blackcat.talker.util.StringUtils;
 
@@ -105,23 +106,23 @@ public class AotDBDao extends AbstractAotDao {
 				
 				StringTokenizer st = new StringTokenizer(grammemasString == null ? "" : grammemasString, ",");
 				StringTokenizer st0 = new StringTokenizer(grammemas0String == null ? "" : grammemas0String, ",");
-//				Grammema[] grammemas = new Grammema[st.countTokens() + st0.countTokens()];
-				long grammemas = 0;
-//				int i = 0;
+				Grammema[] grammemas = new Grammema[st.countTokens() + st0.countTokens()];
+//				long grammemas = 0;
+				int i = 0;
 
 				try {
 					while (st.hasMoreTokens()) {
-//						grammemas[i] = string2Grammema(st.nextToken());
-						grammemas |= string2Grammema(st.nextToken());
-//						i++;
+						grammemas[i] = string2Grammema(st.nextToken());
+//						grammemas |= string2Grammema(st.nextToken());
+						i++;
 					}
 					while (st0.hasMoreTokens()) {
-//						grammemas[i] = string2Grammema(st0.nextToken());
-						grammemas |= string2Grammema(st0.nextToken());
-//						i++;
+						grammemas[i] = string2Grammema(st0.nextToken());
+//						grammemas |= string2Grammema(st0.nextToken());
+						i++;
 					}
 				
-					result.add(new MorphologyAnalysis("", base, flexia, accentCharNo, string2PathOfSpeech(pathOfSpeech0), grammemas));
+					result.add(new MorphologyAnalysis("", base, flexia, accentCharNo, string2PathOfSpeech(pathOfSpeech0), Grammema.getCumulativeGrammemaCode(grammemas)));
 				} catch (DatabaseIntegrityViolationException e) {
 					throw new SQLException("Something wrong with DB dictionary. Base=" + base + ", flexia=" + flexia, e);
 				}
