@@ -79,8 +79,8 @@
    	<bean id="dataSource"	class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
    		<property name="driverClassName"		value="org.postgresql.Driver"/>
    		<property name="url"						value="jdbc:postgresql://localhost:5432/aot"/>
-   		<property name="username"				value="root"/>
-   		<property name="password"				value="root"/>
+   		<property name="username"				value="jtalker"/>
+   		<property name="password"				value="jtalker"/>
    	</bean>
    <!-- /Data Source -->
    
